@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark mystical palette for Mystic Aurora */
+    --background: 260 25% 8%;
+    --foreground: 45 20% 92%;
+
+    --card: 260 20% 12%;
+    --card-foreground: 45 20% 92%;
+
+    --popover: 260 20% 12%;
+    --popover-foreground: 45 20% 92%;
+
+    /* Purple/violet as primary */
+    --primary: 270 50% 55%;
+    --primary-foreground: 45 20% 95%;
+
+    /* Deep purple secondary */
+    --secondary: 260 30% 18%;
+    --secondary-foreground: 45 20% 92%;
+
+    /* Muted dark tones */
+    --muted: 260 20% 15%;
+    --muted-foreground: 45 15% 65%;
+
+    /* Golden accent */
+    --accent: 42 85% 55%;
+    --accent-foreground: 260 25% 8%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 260 20% 20%;
+    --input: 260 20% 18%;
+    --ring: 270 50% 55%;
+
+    --radius: 0.75rem;
+
+    /* Custom gradients for mystical theme */
+    --gradient-hero: linear-gradient(180deg, hsl(260 25% 5% / 0.7) 0%, hsl(260 20% 8% / 0.85) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(270 50% 50% / 0.2) 0%, hsl(42 85% 55% / 0.1) 30%, transparent 70%);
+    --gradient-button: linear-gradient(135deg, hsl(270 50% 55%) 0%, hsl(280 60% 45%) 100%);
+    --gradient-button-gold: linear-gradient(135deg, hsl(42 85% 55%) 0%, hsl(35 80% 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(260 20% 14%) 0%, hsl(260 25% 10%) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(260 30% 5% / 0.4);
+    --shadow-glow: 0 0 60px 0 hsl(270 50% 50% / 0.3);
+    --shadow-glow-gold: 0 0 40px 0 hsl(42 85% 55% / 0.25);
+
+    --sidebar-background: 260 20% 10%;
+    --sidebar-foreground: 45 20% 92%;
+    --sidebar-primary: 270 50% 55%;
+    --sidebar-primary-foreground: 45 20% 95%;
+    --sidebar-accent: 260 25% 15%;
+    --sidebar-accent-foreground: 45 20% 92%;
+    --sidebar-border: 260 20% 18%;
+    --sidebar-ring: 270 50% 55%;
+  }
+
+  .dark {
+    --background: 260 25% 8%;
+    --foreground: 45 20% 92%;
+
+    --card: 260 20% 12%;
+    --card-foreground: 45 20% 92%;
+
+    --popover: 260 20% 12%;
+    --popover-foreground: 45 20% 92%;
+
+    --primary: 270 50% 55%;
+    --primary-foreground: 45 20% 95%;
+
+    --secondary: 260 30% 18%;
+    --secondary-foreground: 45 20% 92%;
+
+    --muted: 260 20% 15%;
+    --muted-foreground: 45 15% 65%;
+
+    --accent: 42 85% 55%;
+    --accent-foreground: 260 25% 8%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 260 20% 20%;
+    --input: 260 20% 18%;
+    --ring: 270 50% 55%;
+
+    --sidebar-background: 260 20% 10%;
+    --sidebar-foreground: 45 20% 92%;
+    --sidebar-primary: 270 50% 55%;
+    --sidebar-primary-foreground: 45 20% 95%;
+    --sidebar-accent: 260 25% 15%;
+    --sidebar-accent-foreground: 45 20% 92%;
+    --sidebar-border: 260 20% 18%;
+    --sidebar-ring: 270 50% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-glow {
+    background: var(--gradient-glow);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+/* Breathing animation */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+
+.mystic-aurora-logo {
+  width: 15rem !important;
+  height: 10rem !important;
+}
