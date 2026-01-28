@@ -7,12 +7,28 @@ const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+
+    try {
+      const res = await fetch("/.netlify/functions/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          group: "FREE_MEDITATION"
+        })
+      });
+
+      if (!res.ok) throw new Error("Błąd zapisu");
+
       setIsSubmitted(true);
       setEmail("");
       setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err) {
+      console.error(err);
+      alert("Coś poszło nie tak 😕");
     }
   };
 
