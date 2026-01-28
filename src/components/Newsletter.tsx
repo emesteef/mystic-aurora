@@ -17,7 +17,7 @@ const Newsletter = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          group: "FREE_MEDITATION"
+          group: "NEWSLETTER"
         })
       });
 
