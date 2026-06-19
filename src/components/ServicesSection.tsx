@@ -67,7 +67,7 @@ const ServicesSection = () => {
           </h2>
           
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Pomagamy odzyskać spokój, energię i lepiej rozumieć siebie.
+            Pomagam odzyskać spokój, energię i lepiej rozumieć siebie.
           </p>
           
           {/* Decorative line */}
