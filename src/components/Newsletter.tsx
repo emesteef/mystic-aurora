@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Sparkles } from "lucide-react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,7 +19,8 @@ const Newsletter = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          group: "NEWSLETTER"
+          group: "NEWSLETTER",
+          consented_at: new Date().toISOString()
         })
       });
 
@@ -85,25 +88,44 @@ const Newsletter = () => {
               Otrzymuj inspiracje, praktyczne wskazówki i refleksje pomagające odzyskać spokój, energię i lepiej rozumieć siebie.
             </p>
             
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <div className="relative flex-1 group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300" />
-                <Input
-                  type="email"
-                  placeholder="Twój adres email..."
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-12 bg-white/[0.05] border-white/20 focus:border-accent focus:bg-white/[0.08] h-14 text-base rounded-xl shadow-inner shadow-black/20 transition-all duration-300"
-                  required
-                />
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1 group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-accent transition-colors duration-300" />
+                  <Input
+                    type="email"
+                    placeholder="Twój adres email..."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-12 bg-white/[0.05] border-white/20 focus:border-accent focus:bg-white/[0.08] h-14 text-base rounded-xl shadow-inner shadow-black/20 transition-all duration-300"
+                    required
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={!agreed}
+                  className="h-14 px-8 bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 text-accent-foreground font-medium rounded-xl shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+                >
+                  {isSubmitted ? "Dziękujemy! ✨" : "Zapisz się"}
+                </Button>
               </div>
-              <Button 
-                type="submit" 
-                size="lg" 
-                className="h-14 px-8 bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 text-accent-foreground font-medium rounded-xl shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-              >
-                {isSubmitted ? "Dziękujemy! ✨" : "Zapisz się"}
-              </Button>
+
+              <div className="flex items-start gap-3 text-left">
+                <Checkbox
+                  id="gdpr"
+                  checked={agreed}
+                  onCheckedChange={(val) => setAgreed(val === true)}
+                  className="mt-0.5 border-white/30 data-[state=checked]:bg-accent data-[state=checked]:border-accent"
+                />
+                <label htmlFor="gdpr" className="text-sm text-muted-foreground/80 leading-snug cursor-pointer">
+                  Zgadzam się na otrzymywanie newslettera Mystic Aurora oraz akceptuję{" "}
+                  <a href="/polityka-prywatnosci" className="underline underline-offset-2 hover:text-accent transition-colors">
+                    Politykę Prywatności
+                  </a>
+                  .
+                </label>
+              </div>
             </form>
             
             <p className="text-sm text-muted-foreground/70 mt-6">
