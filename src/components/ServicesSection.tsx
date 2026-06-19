@@ -4,26 +4,26 @@ import { Brain, Sparkles, Heart, Moon } from "lucide-react";
 const services = [
   {
     icon: Brain,
-    title: "Medytacje Prowadzone",
-    description: "Głębokie sesje medytacyjne z przewodnikiem, które pomogą Ci odnaleźć wewnętrzny spokój i harmonię umysłu.",
+    title: "Energia osobista",
+    description: "Naucz się rozpoznawać, gdzie ucieka Twoja energia – i jak świadomie nią zarządzać.",
     accentColor: "purple" as const,
   },
   {
     icon: Sparkles,
-    title: "Czyszczenie Energetyczne",
-    description: "Oczyszczanie aury i przestrzeni z negatywnych energii, przywracanie równowagi duchowej i witalności.",
+    title: "Granice i emocje",
+    description: "Praca z emocjami i granicami, które chronią Twój wewnętrzny spokój.",
     accentColor: "gold" as const,
   },
   {
     icon: Heart,
-    title: "Uzdrawianie Serca",
-    description: "Praca z emocjami i blokadami serca, otwieranie się na miłość i współczucie wobec siebie i innych.",
+    title: "Intuicja i samoświadomość",
+    description: "Rozwijaj umiejętność słuchania siebie – w relacjach, decyzjach i codziennym życiu.",
     accentColor: "rose" as const,
   },
   {
     icon: Moon,
-    title: "Rytuały Księżycowe",
-    description: "Ceremonie związane z fazami księżyca, manifestacja intencji i głęboka praca z energią lunarną.",
+    title: "Przemiany życiowe",
+    description: "Wsparcie w momentach przejścia – gdy kończy się jeden rozdział i zaczyna kolejny.",
     accentColor: "teal" as const,
   },
 ];
