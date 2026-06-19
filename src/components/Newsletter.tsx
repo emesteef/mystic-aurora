@@ -74,7 +74,7 @@ const Newsletter = () => {
           <div className="text-center relative z-10">
             <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/15 border border-accent/30 mb-6 shadow-lg shadow-accent/10">
               <Sparkles className="w-4 h-4 text-accent animate-pulse" />
-              <span className="text-sm text-foreground/90 font-medium">Dołącz do duchowej społeczności</span>
+              <span className="text-sm text-foreground/90 font-medium">✨ Dołącz do społeczności Mystic Aurora</span>
             </div>
             
             <h2 className="text-3xl md:text-5xl font-heading font-light text-foreground mb-5">
@@ -82,7 +82,7 @@ const Newsletter = () => {
             </h2>
             
             <p className="text-muted-foreground text-lg mb-10 max-w-lg mx-auto leading-relaxed">
-              Otrzymuj cotygodniowe inspiracje, medytacje i wskazówki do duchowego rozwoju prosto na swoją skrzynkę.
+              Otrzymuj inspiracje, praktyczne wskazówki i refleksje pomagające odzyskać spokój, energię i lepiej rozumieć siebie.
             </p>
             
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">

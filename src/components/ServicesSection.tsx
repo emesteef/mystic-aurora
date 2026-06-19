@@ -59,7 +59,7 @@ const ServicesSection = () => {
         <div className="text-center mb-16 animate-fade-in-up opacity-0">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Sparkles className="w-4 h-4 text-accent" />
-            <span className="text-sm text-muted-foreground">Duchowe usługi</span>
+            <span className="text-sm text-muted-foreground">Rozwój osobisty</span>
           </div>
           
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-light text-foreground mb-5">
@@ -67,7 +67,7 @@ const ServicesSection = () => {
           </h2>
           
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Odkryj ścieżki do wewnętrznej transformacji i duchowego przebudzenia poprzez sprawdzone praktyki i ceremonie
+            Pomagamy odzyskać spokój, energię i lepiej rozumieć siebie.
           </p>
           
           {/* Decorative line */}
