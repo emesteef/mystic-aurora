@@ -50,18 +50,18 @@ const Index = () => {
           
           {/* Tagline */}
           <p className="mt-6 text-lg md:text-xl text-muted-foreground font-light text-center max-w-lg animate-fade-in-up opacity-0 animation-delay-400">
-            Znajdź wewnętrzny spokój, harmonię i transformację
+            Rozwój osobisty inspirowany energią, intuicją i świadomością.
           </p>
           
           {/* CTA Buttons */}
           <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up opacity-0 animation-delay-400">
-            <Button variant="hero" size="xl">
+            <Button variant="hero" size="xl" className="px-8">
               <BookOpen className="w-5 h-5 mr-2" />
-              Blog Duchowy
+              Blog
             </Button>
-            <Button variant="heroOutline" size="xl">
+            <Button variant="heroOutline" size="xl" className="px-8">
               <ShoppingBag className="w-5 h-5 mr-2" />
-              Sklep Energetyczny
+              Sklep
             </Button>
           </div>
           
