@@ -7,15 +7,15 @@ export const handler = async (event) => {
                 ? process.env.MAILERLITE_GROUP_FREE_MEDITATION
                 : process.env.MAILERLITE_GROUP_NEWSLETTER;
 
-        // MailerLite expects "YYYY-MM-DD HH:MM:SS" format
-        const optedInAt = consented_at
-            ? new Date(consented_at).toISOString().replace("T", " ").substring(0, 19)
+        // MailerLite date fields expect "YYYY-MM-DD" format
+        const consentDate = consented_at
+            ? new Date(consented_at).toISOString().substring(0, 10)
             : undefined;
 
         const payload = {
             email,
             groups: [groupId],
-            ...(optedInAt && { opted_in_at: optedInAt })
+            ...(consentDate && { fields: { data_zgody_rodo: consentDate } })
         };
 
         const res = await fetch("https://connect.mailerlite.com/api/subscribers", {
