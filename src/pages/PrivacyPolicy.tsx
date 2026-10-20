@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const PrivacyPolicy = () => {
+  usePageMeta("/polityka-prywatnosci");
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-3xl mx-auto px-6 py-16">
+      <main className="max-w-3xl mx-auto px-6 py-16">
 
         <Link
           to="/"
@@ -167,7 +169,7 @@ const PrivacyPolicy = () => {
           © {new Date().getFullYear()} Mystic Aurora. Wszelkie prawa zastrzeżone.
         </div>
 
-      </div>
+      </main>
     </div>
   );
 };

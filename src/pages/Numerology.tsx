@@ -4,8 +4,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon } from "lucide-react";
 import { pl } from "date-fns/locale";
 import { calculateNumerology } from "@/lib/numerology";
+import { usePageMeta } from "@/hooks/use-page-meta";
 
 const Numerology = () => {
+  usePageMeta("/numerologia");
   const [selected, setSelected] = useState<Date | undefined>();
   const [open, setOpen] = useState(false);
   const [results, setResults] = useState<string[] | null>(null);
@@ -17,7 +19,7 @@ const Numerology = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-24">
+    <main className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-24">
       <div className="max-w-xl w-full mx-auto">
         <h1 className="text-5xl md:text-6xl font-heading font-light text-foreground mb-10 text-center">
           Numerologia
@@ -69,7 +71,7 @@ const Numerology = () => {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

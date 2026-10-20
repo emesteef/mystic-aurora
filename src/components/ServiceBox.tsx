@@ -44,7 +44,7 @@ const ServiceBox = ({ icon: Icon, title, description, delay = "0", accentColor =
   
   return (
     <div 
-      className={`group relative p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-xl shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-500 animate-fade-in-up opacity-0 cursor-pointer ${styles.hoverBorder} overflow-hidden`}
+      className={`group relative p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-xl shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-500 animate-fade-in-up opacity-0 ${styles.hoverBorder} overflow-hidden`}
       style={{ animationDelay: delay }}
     >
       {/* Glassmorphism inner glow */}

@@ -2,6 +2,13 @@ export const handler = async (event) => {
     try {
         const { email, group, consented_at } = JSON.parse(event.body);
 
+        // bez poprawnego e-maila i daty zgody nie zapisujemy (rozliczalność zgody, art. 7 ust. 1 RODO)
+        const emailValid = typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+        const consentValid = typeof consented_at === "string" && !Number.isNaN(Date.parse(consented_at));
+        if (!emailValid || !consentValid) {
+            return { statusCode: 400 };
+        }
+
         const groupId =
             group === "FREE_MEDITATION"
                 ? process.env.MAILERLITE_GROUP_FREE_MEDITATION

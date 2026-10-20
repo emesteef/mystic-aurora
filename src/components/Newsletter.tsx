@@ -3,40 +3,64 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Sparkles } from "lucide-react";
+import { trackNewsletterSignup } from "@/lib/analytics";
 
-const Newsletter = () => {
+interface NewsletterProps {
+  id?: string;
+  group?: "NEWSLETTER" | "FREE_MEDITATION";
+  badge?: string;
+  title?: React.ReactNode;
+  description?: string;
+  buttonLabel?: string;
+}
+
+const Newsletter = ({
+  id = "newsletter",
+  group = "NEWSLETTER",
+  badge = "✨ Dołącz do społeczności Mystic Aurora",
+  title = <>Zapisz się do <span className="text-accent">Newslettera</span></>,
+  description = "Otrzymuj inspiracje, praktyczne wskazówki i refleksje pomagające odzyskać spokój, energię i lepiej rozumieć siebie.",
+  buttonLabel = "Zapisz się",
+}: NewsletterProps) => {
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || isSubmitting) return;
 
+    setError(null);
+    setIsSubmitting(true);
     try {
       const res = await fetch("/.netlify/functions/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          group: "NEWSLETTER",
+          group,
           consented_at: new Date().toISOString()
         })
       });
 
       if (!res.ok) throw new Error("Błąd zapisu");
+      trackNewsletterSignup("home_newsletter");
 
       setIsSubmitted(true);
       setEmail("");
       setTimeout(() => setIsSubmitted(false), 3000);
     } catch (err) {
       console.error(err);
-      alert("Coś poszło nie tak 😕");
+      setError("Nie udało się zapisać. Sprawdź adres e-mail i spróbuj ponownie za chwilę.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="py-20 px-6 relative overflow-hidden">
+    <section id={id} className="py-20 px-6 relative overflow-hidden scroll-mt-20">
       {/* Strong background separation */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.08] via-accent/[0.05] to-primary/[0.08] pointer-events-none" />
       
@@ -77,15 +101,15 @@ const Newsletter = () => {
           <div className="text-center relative z-10">
             <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/15 border border-accent/30 mb-6 shadow-lg shadow-accent/10">
               <Sparkles className="w-4 h-4 text-accent animate-pulse" />
-              <span className="text-sm text-foreground/90 font-medium">✨ Dołącz do społeczności Mystic Aurora</span>
+              <span className="text-sm text-foreground/90 font-medium">{badge}</span>
             </div>
             
             <h2 className="text-3xl md:text-5xl font-heading font-light text-foreground mb-5">
-              Zapisz się do <span className="text-accent">Newslettera</span>
+              {title}
             </h2>
             
             <p className="text-muted-foreground text-lg mb-10 max-w-lg mx-auto leading-relaxed">
-              Otrzymuj inspiracje, praktyczne wskazówki i refleksje pomagające odzyskać spokój, energię i lepiej rozumieć siebie.
+              {description}
             </p>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
@@ -104,10 +128,10 @@ const Newsletter = () => {
                 <Button
                   type="submit"
                   size="lg"
-                  disabled={!agreed}
+                  disabled={!agreed || isSubmitting}
                   className="h-14 px-8 bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 text-accent-foreground font-medium rounded-xl shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  {isSubmitted ? "Dziękujemy! ✨" : "Zapisz się"}
+                  {isSubmitted ? "Dziękujemy! ✨" : isSubmitting ? "Zapisywanie…" : buttonLabel}
                 </Button>
               </div>
 
@@ -126,9 +150,13 @@ const Newsletter = () => {
                   .
                 </label>
               </div>
+              <div aria-live="polite" className="min-h-[1.25rem]">
+                {error && <p className="text-sm text-red-300">{error}</p>}
+                {isSubmitted && <p className="text-sm text-accent">Dziękujemy! Sprawdź swoją skrzynkę e-mail.</p>}
+              </div>
             </form>
             
-            <p className="text-sm text-muted-foreground/70 mt-6">
+            <p className="text-sm text-muted-foreground mt-6">
               ✨ Szanujemy Twoją prywatność. Możesz wypisać się w każdej chwili.
             </p>
           </div>

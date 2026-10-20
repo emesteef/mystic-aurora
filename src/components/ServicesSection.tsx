@@ -5,32 +5,32 @@ const services = [
   {
     icon: Brain,
     title: "Energia osobista",
-    description: "Naucz się rozpoznawać, gdzie ucieka Twoja energia – i jak świadomie nią zarządzać.",
+    description: "Przyglądamy się temu, co dodaje nam energii, a co ją zabiera – i jak na co dzień świadomie o nią dbać.",
     accentColor: "purple" as const,
   },
   {
     icon: Sparkles,
-    title: "Granice i emocje",
-    description: "Praca z emocjami i granicami, które chronią Twój wewnętrzny spokój.",
+    title: "Emocje i granice",
+    description: "Refleksje o tym, jak zauważać swoje emocje i stawiać granice, które pomagają zachować wewnętrzny spokój.",
     accentColor: "gold" as const,
   },
   {
     icon: Heart,
     title: "Intuicja i samoświadomość",
-    description: "Rozwijaj umiejętność słuchania siebie – w relacjach, decyzjach i codziennym życiu.",
+    description: "Inspiracje do słuchania siebie – w relacjach, decyzjach i zwykłych, codziennych sytuacjach.",
     accentColor: "rose" as const,
   },
   {
     icon: Moon,
     title: "Przemiany życiowe",
-    description: "Wsparcie w momentach przejścia – gdy kończy się jeden rozdział i zaczyna kolejny.",
+    description: "Myśli i pytania na czas zmian – gdy jeden rozdział się kończy, a kolejny dopiero się zaczyna.",
     accentColor: "teal" as const,
   },
 ];
 
 const ServicesSection = () => {
   return (
-    <section className="py-24 px-6 relative overflow-hidden">
+    <section className="py-24 px-6 relative overflow-hidden scroll-mt-20">
       {/* Main section background - lighter band for separation */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent pointer-events-none" />
       
@@ -63,11 +63,11 @@ const ServicesSection = () => {
           </div>
           
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-light text-foreground mb-5">
-            Czym się zajmuję
+            Co znajdziesz w Mystic Aurora
           </h2>
           
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Pomagam odzyskać spokój, energię i lepiej rozumieć siebie.
+            Refleksje, inspiracje i materiały, które zachęcają do lepszego poznawania siebie.
           </p>
           
           {/* Decorative line */}
