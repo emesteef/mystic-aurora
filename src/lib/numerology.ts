@@ -4,32 +4,38 @@ interface NumerologyCalculationResult {
   karmicNumber: number | null;
   masterNumber: number | null;
   spiritualGuidanceNumber: number | null;
+  // wszystkie liczby karmiczne, mistrzowskie i ochronne, które pojawiły się w obliczeniach pola
+  specialNumbers: number[];
 }
 
 const KARMIC_NUMBERS = [13, 14, 16, 19, 26, 29];
-const MASTER_NUMBERS = [11, 22, 33];
-const SPIRITUAL_GUIDANCE_NUMBERS = [17, 27];
+const MASTER_NUMBERS = [11, 22, 33, 44, 55, 66, 77, 88, 99];
+const SPIRITUAL_GUIDANCE_NUMBERS = [12, 17, 23, 27, 28, 41];
 
 function sumDigits(num: number): number {
   return num.toString().split('').map(Number).reduce((acc, digit) => acc + digit, 0);
 }
 
-function formatNumerologyCalculationResult(result: NumerologyCalculationResult): string {
-  let specialValue = null;
-  if (result.masterNumber && result.karmicNumber) {
-    specialValue = `${result.karmicNumber} (master: ${result.masterNumber})`;
-  } else {
-    const special = result.masterNumber || result.karmicNumber;
-    specialValue = special ? '' + special : null;
-  }
+function specialLabel(num: number): string {
+  if (KARMIC_NUMBERS.includes(num)) return 'karma';
+  if (MASTER_NUMBERS.includes(num)) return 'master';
+  return 'ochrona';
+}
 
-  const reducedNumber = '' + result.reducedNumber;
-  const displayFormatted = !!specialValue && specialValue !== reducedNumber;
-  let formatted = displayFormatted ? `${specialValue} / ${reducedNumber}` : reducedNumber;
-  if (result.spiritualGuidanceNumber) {
-    formatted += ` - ochrona: ${result.spiritualGuidanceNumber}`;
-  }
-  return formatted;
+function isSpecial(num: number): boolean {
+  return KARMIC_NUMBERS.includes(num) || MASTER_NUMBERS.includes(num) || SPIRITUAL_GUIDANCE_NUMBERS.includes(num);
+}
+
+// Np. "3", "12 / 3 - ochrona", "29 / 11 - karma 29, master 11"
+function formatNumerologyCalculationResult(result: NumerologyCalculationResult): string {
+  const specials = result.specialNumbers;
+  if (specials.length === 0) return '' + result.reducedNumber;
+
+  const values = specials.includes(result.reducedNumber) ? specials : [...specials, result.reducedNumber];
+  const labels = specials.length === 1
+    ? specialLabel(specials[0])
+    : specials.map((num) => `${specialLabel(num)} ${num}`).join(', ');
+  return `${values.join(' / ')} - ${labels}`;
 }
 
 function reduceNumber(inputNumber: number): number[] {
@@ -59,7 +65,7 @@ function sumNumbersThenReduce(inputNumber: number): NumerologyCalculationResult 
     if (SPIRITUAL_GUIDANCE_NUMBERS.includes(reducedNumber)) spiritualGuidanceNumber = reducedNumber;
   }
 
-  return { originalNumber: inputNumber, reducedNumber, karmicNumber, masterNumber, spiritualGuidanceNumber };
+  return { originalNumber: inputNumber, reducedNumber, karmicNumber, masterNumber, spiritualGuidanceNumber, specialNumbers: [] };
 }
 
 function customCalculate(number1: number, number2?: number): NumerologyCalculationResult {
@@ -85,16 +91,16 @@ function customCalculate(number1: number, number2?: number): NumerologyCalculati
     results.push(sumNumbersThenReduce(value));
   }
 
-  // TODO: napisac samemu
-  let karmicNumber = results.length === 1 ? results[0].karmicNumber : null;
-  let masterNumber = results.length === 1 ? results[0].masterNumber : null;
+  const specialNumbers = new Set<number>();
+  for (const value of valuesSet) {
+    for (const num of reduceNumber(value)) {
+      if (isSpecial(num)) specialNumbers.add(num);
+    }
+  }
 
   const bestResult = results.reduce((best, current) => {
     const bestHasSpecial = best.masterNumber || best.karmicNumber;
     const currentHasSpecial = current.masterNumber || current.karmicNumber;
-
-    if (current.karmicNumber) karmicNumber = current.karmicNumber;
-    if (current.masterNumber) masterNumber = current.masterNumber;
 
     if (currentHasSpecial && !bestHasSpecial) return current;
     if (current.masterNumber && !best.masterNumber) return current;
@@ -103,7 +109,7 @@ function customCalculate(number1: number, number2?: number): NumerologyCalculati
     return best;
   });
 
-  return { ...bestResult, karmicNumber, masterNumber };
+  return { ...bestResult, specialNumbers: [...specialNumbers].sort((a, b) => b - a) };
 }
 
 export function calculateNumerology(date: Date): string[] {
