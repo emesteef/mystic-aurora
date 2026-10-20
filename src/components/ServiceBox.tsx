@@ -44,7 +44,7 @@ const ServiceBox = ({ icon: Icon, title, description, delay = "0", accentColor =
   
   return (
     <div 
-      className={`group relative p-6 md:p-8 rounded-2xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-xl shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-500 animate-fade-in-up opacity-0 ${styles.hoverBorder} overflow-hidden`}
+      className={`group relative p-5 md:p-8 rounded-2xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-xl shadow-xl shadow-black/20 hover:shadow-2xl hover:shadow-black/30 transition-all duration-500 animate-fade-in-up opacity-0 ${styles.hoverBorder} overflow-hidden`}
       style={{ animationDelay: delay }}
     >
       {/* Glassmorphism inner glow */}
@@ -67,15 +67,15 @@ const ServiceBox = ({ icon: Icon, title, description, delay = "0", accentColor =
       <div className="absolute bottom-6 right-6 w-1.5 h-1.5 rounded-full bg-accent/40 opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity duration-700" />
       
       {/* Icon container with enhanced glow */}
-      <div className={`relative mb-6 w-16 h-16 rounded-xl bg-gradient-to-br ${styles.iconBg} flex items-center justify-center group-hover:scale-110 shadow-lg ${styles.iconGlow} group-hover:shadow-xl transition-all duration-300`}>
-        <Icon className={`w-8 h-8 ${styles.iconColor} drop-shadow-lg`} />
+      <div className={`relative mb-4 w-12 h-12 md:mb-6 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${styles.iconBg} flex items-center justify-center group-hover:scale-110 shadow-lg ${styles.iconGlow} group-hover:shadow-xl transition-all duration-300`}>
+        <Icon className={`w-6 h-6 md:w-8 md:h-8 ${styles.iconColor} drop-shadow-lg`} aria-hidden="true" />
         {/* Icon ring with glow */}
         <div className="absolute inset-0 rounded-xl border border-white/20 group-hover:border-white/40 transition-colors duration-300" />
         <div className={`absolute -inset-1 rounded-xl bg-gradient-to-br ${styles.iconBg} opacity-0 group-hover:opacity-40 blur-md transition-opacity duration-500`} />
       </div>
       
       {/* Content */}
-      <h3 className={`relative text-xl md:text-2xl font-heading font-medium text-foreground mb-3 transition-colors duration-300 ${styles.titleHover}`}>
+      <h3 className={`relative text-xl md:text-2xl font-heading font-medium text-foreground mb-2 md:mb-3 transition-colors duration-300 ${styles.titleHover}`}>
         {title}
       </h3>
       
