@@ -53,7 +53,7 @@ const Index = () => {
         <div className="absolute bottom-20 right-10 w-3 h-3 rounded-full bg-primary/30 animate-float animation-delay-600" />
         
         {/* Main content */}
-        <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-24 pb-14 md:pt-32 md:pb-24 text-center">
+        <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-20 pb-12 md:pt-32 md:pb-24 text-center">
           {/* Logo */}
           <div className="animate-fade-in-up opacity-0">
             <div className="relative">
@@ -109,7 +109,7 @@ const Index = () => {
           </div>
           
           {/* Motivational quote */}
-          <blockquote className="mt-8 md:mt-12 text-center max-w-xl animate-fade-in-up opacity-0 animation-delay-600">
+          <blockquote className="mt-6 md:mt-12 text-center max-w-xl animate-fade-in-up opacity-0 animation-delay-600">
             <p className="text-base md:text-lg font-heading italic text-foreground/70 leading-relaxed">
               „Każdy oddech jest krokiem ku wewnętrznej ciszy."
             </p>
@@ -126,15 +126,15 @@ const Index = () => {
       
       {/* About Section */}
       <AboutSection />
-      
-      {/* Services Section */}
-      <ServicesSection />
-      
+
+      {/* Darmowy materiał – krótkie zaproszenie */}
+      <FreeMaterialCtaSection />
+
       {/* Products Section */}
       <ProductsSection />
 
-      {/* Darmowy materiał (zamiast formularza newslettera) */}
-      <FreeMaterialCtaSection />
+      {/* Services Section – obszary tematyczne */}
+      <ServicesSection />
       </main>
 
       <Footer />

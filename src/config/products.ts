@@ -1,5 +1,5 @@
 // Produkty wyświetlane w sekcji „Odkryj nasze produkty” na stronie głównej.
-// Aby podmienić grafikę, wystarczy zastąpić plik w src/assets/products/ (ta sama nazwa, proporcje 3:4).
+// Aby podmienić grafikę, wystarczy zastąpić plik w src/assets/products/ (ta sama nazwa; karta pokazuje całą grafikę).
 // Gdy produkt będzie w sprzedaży: ustaw status "available" i productUrl na prawdziwy adres produktu.
 
 import rytualMiotly from "@/assets/products/rytual-miotly.webp";
@@ -18,7 +18,6 @@ export interface Product {
   imageAlt?: string;
   productUrl?: string;
   status: ProductStatus;
-  details?: string[];
   freeSampleUrl?: string; // np. darmowy pierwszy dzień programu
 }
 
@@ -28,27 +27,18 @@ export const PRODUCTS: Product[] = [
     title: "Rytuał Miotły",
     format: "PDF, 6 stron",
     description:
-      "Prosty rytuał symbolicznego oczyszczania przestrzeni. Dowiedz się, jak przygotować miejsce, nadać mu własną intencję i przeprowadzić rytuał krok po kroku.",
-    details: [
-      "Do wykonania wystarczy naturalna miotła i kilka minut.",
-      "Materiał zawiera instrukcję oraz formułę intencji.",
-      "Nie wymaga wcześniejszego doświadczenia.",
-    ],
+      "Symboliczny rytuał oczyszczania przestrzeni, który przeprowadzisz krok po kroku. Zawiera przygotowanie miejsca, formułę intencji i zakończenie rytuału.",
     image: rytualMiotly,
+    imageAlt: "Okładka materiału „Rytuał Miotły”",
     status: "comingSoon",
   },
   {
     id: "7-dni-powrotu-do-siebie",
     title: "7 dni powrotu do siebie",
-    format: "Program PDF, 7 dni",
+    format: "Program PDF",
     price: 39,
     description:
-      "Siedem dni z pytaniami i ćwiczeniami, które zachęcają do zatrzymania się, przyjrzenia własnym emocjom i lepszego poznania swoich potrzeb.",
-    details: [
-      "Każdy dzień zawiera osobny temat.",
-      "Program przeznaczony do samodzielnej pracy.",
-      "Pierwszy dzień można otrzymać bezpłatnie.",
-    ],
+      "Siedem dni pytań i ćwiczeń, które zachęcają do zatrzymania się, przyjrzenia emocjom i lepszego poznania własnych potrzeb.",
     image: siedemDniCover,
     imageAlt: "Okładka pełnego programu „7 dni powrotu do siebie”",
     status: "comingSoon",
@@ -59,8 +49,9 @@ export const PRODUCTS: Product[] = [
     title: "Krąg Ognia",
     format: "Materiał audio",
     description:
-      "Prowadzona praktyka inspirowana symboliką ognia. Chwila zatrzymania, skupienia na własnej intencji i refleksji nad tym, co chcesz pozostawić za sobą.",
+      "Prowadzona praktyka inspirowana symboliką ognia. Chwila na skupienie, refleksję i świadome określenie własnej intencji.",
     image: kragOgnia,
+    imageAlt: "Grafika materiału audio „Krąg Ognia”",
     status: "comingSoon",
   },
 ];

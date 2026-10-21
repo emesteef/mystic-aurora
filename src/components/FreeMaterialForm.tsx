@@ -17,9 +17,11 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 // TODO: podłączyć wysyłkę (np. /.netlify/functions/subscribe). Na razie tylko symulacja.
 // Po podłączeniu: przy sukcesie i zaznaczonym newsletterze wywołać trackNewsletterSignup("landing_free_material").
-const submitFreeMaterial = async (data: FormData): Promise<void> => {
+// Zwraca deliveryConfirmed: true dopiero, gdy backend potwierdzi wysyłkę PDF – wtedy formularz o niej informuje.
+const submitFreeMaterial = async (data: FormData): Promise<{ deliveryConfirmed: boolean }> => {
   void data;
   await new Promise((resolve) => setTimeout(resolve, 800));
+  return { deliveryConfirmed: false };
 };
 
 const validateEmail = (value: string): string | null => {
@@ -31,8 +33,8 @@ const validateEmail = (value: string): string | null => {
 };
 
 const FieldError = ({ id, children }: { id: string; children: React.ReactNode }) => (
-  <p id={id} className="mt-2 flex items-start gap-1.5 text-sm text-red-300">
-    <CircleAlert className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+  <p id={id} className="mt-2.5 flex items-start gap-2 text-[0.9375rem] font-medium text-red-200 leading-snug">
+    <CircleAlert className="w-[18px] h-[18px] mt-px shrink-0 text-red-300" aria-hidden="true" />
     <span>{children}</span>
   </p>
 );
@@ -48,6 +50,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   const [emailTouched, setEmailTouched] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [announcement, setAnnouncement] = useState("");
+  const [deliveryConfirmed, setDeliveryConfirmed] = useState(false);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const privacyRef = useRef<HTMLButtonElement>(null);
@@ -80,7 +83,8 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
     setAnnouncement("Wysyłanie formularza…");
     setStatus("submitting");
     try {
-      await submitFreeMaterial({ email: email.trim(), newsletter });
+      const result = await submitFreeMaterial({ email: email.trim(), newsletter });
+      setDeliveryConfirmed(result.deliveryConfirmed);
       setAnnouncement("");
       setStatus("success");
     } catch {
@@ -96,10 +100,14 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
         <h3 ref={successRef} tabIndex={-1} className="text-2xl font-heading text-foreground mb-3 outline-none">
           Dziękujemy!
         </h3>
-        <p className="text-muted-foreground leading-relaxed">
-          Materiał wyślemy na adres <span className="text-foreground break-all">{email.trim()}</span>. Sprawdź swoją
-          skrzynkę, także folder „Oferty” lub „Spam”.
-        </p>
+        {deliveryConfirmed ? (
+          <p className="text-lg text-foreground/85 leading-relaxed">
+            Materiał wyślemy na adres <span className="text-foreground break-all">{email.trim()}</span>. Sprawdź swoją
+            skrzynkę, także folder „Oferty” lub „Spam”.
+          </p>
+        ) : (
+          <p className="text-lg text-foreground/85 leading-relaxed">Formularz został wysłany.</p>
+        )}
       </div>
     );
   }
@@ -107,7 +115,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   const isSubmitting = status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit} noValidate aria-busy={isSubmitting} className="flex flex-col gap-6 text-left">
+    <form onSubmit={handleSubmit} noValidate aria-busy={isSubmitting} className="flex flex-col gap-7 text-left">
       {/* komunikaty dla czytników ekranu (podsumowanie błędów, stan wysyłania) */}
       <p className="sr-only" role="status" aria-live="polite">
         {announcement}
@@ -149,7 +157,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
         {showEmailError && <FieldError id="free-material-email-error">{emailError}</FieldError>}
       </div>
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-4">
         <legend className="sr-only">Zgody</legend>
 
         <div>
@@ -167,7 +175,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
             />
             <label
               htmlFor="free-material-privacy"
-              className="text-[0.9375rem] text-foreground/90 leading-relaxed cursor-pointer"
+              className="text-base text-foreground/90 leading-relaxed cursor-pointer"
             >
               Chcę otrzymać bezpłatny materiał PDF na podany adres e-mail i akceptuję{" "}
               <Link to="/polityka-prywatnosci" className="underline underline-offset-2 hover:text-accent transition-colors">
@@ -193,7 +201,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
           />
           <label
             htmlFor="free-material-newsletter"
-            className="text-[0.9375rem] text-foreground/90 leading-relaxed cursor-pointer"
+            className="text-base text-foreground/90 leading-relaxed cursor-pointer"
           >
             Chcę też otrzymywać newsletter Mystic Aurora z inspiracjami i informacjami o nowych materiałach.{" "}
             <span className="text-foreground/65 text-sm">(opcjonalnie)</span>
@@ -227,7 +235,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
         )}
       </div>
 
-      <div className="flex items-start gap-3 border-t border-white/10 pt-5 text-sm text-foreground/75 leading-relaxed">
+      <div className="flex items-start gap-3 text-sm text-foreground/75 leading-relaxed">
         <Lock className="w-4 h-4 mt-1 shrink-0 text-accent" aria-hidden="true" />
         <p>
           Adres e-mail wykorzystamy do wysłania materiału{newsletter ? " i newslettera" : ""}. Z newslettera możesz
