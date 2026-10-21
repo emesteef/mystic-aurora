@@ -3,7 +3,7 @@
 // Gdy produkt będzie w sprzedaży: ustaw status "available" i productUrl na prawdziwy adres produktu.
 
 import rytualMiotly from "@/assets/products/rytual-miotly.webp";
-import siedemDni from "@/assets/products/7-dni-powrotu-do-siebie.webp";
+import siedemDniCover from "@/assets/products/7-dni/cover.webp";
 import kragOgnia from "@/assets/products/krag-ognia.webp";
 
 export type ProductStatus = "available" | "comingSoon";
@@ -15,6 +15,7 @@ export interface Product {
   format: string;
   price?: number; // w złotych, brutto
   image: string;
+  imageAlt?: string;
   productUrl?: string;
   status: ProductStatus;
   details?: string[];
@@ -48,7 +49,8 @@ export const PRODUCTS: Product[] = [
       "Program przeznaczony do samodzielnej pracy.",
       "Pierwszy dzień można otrzymać bezpłatnie.",
     ],
-    image: siedemDni,
+    image: siedemDniCover,
+    imageAlt: "Okładka pełnego programu „7 dni powrotu do siebie”",
     status: "comingSoon",
     freeSampleUrl: "/7-dni-powrotu-do-siebie",
   },

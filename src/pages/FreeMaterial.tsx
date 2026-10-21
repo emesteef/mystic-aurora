@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowRight, Clock, FileText, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,7 +10,8 @@ import { trackFreeMaterialCta, trackProductClick, trackShopClick } from "@/lib/a
 import { PRODUCTS } from "@/config/products";
 import { cn } from "@/lib/utils";
 import heroBg from "@/assets/hero-bg.jpg";
-import programCover from "@/assets/products/7-dni-powrotu-do-siebie.webp";
+import dayOneCover from "@/assets/products/7-dni/day-1-cover.webp";
+import dayOneContent from "@/assets/products/7-dni/day-1-content.webp";
 
 const situations = [
   "Masz czas dla wszystkich, tylko nie dla siebie.",
@@ -18,15 +19,10 @@ const situations = [
   "Odkładasz własne potrzeby na później.",
 ];
 
-// Podgląd prawdziwych stron PDF: wystarczy wrzucić pliki .webp do src/assets/pdf-podglad/
-// (np. dzien-1-strona-1.webp). Gdy folder jest pusty, pokazujemy neutralne placeholdery.
-const pdfPages = Object.entries(
-  import.meta.glob<string>("@/assets/pdf-podglad/*.webp", { eager: true, import: "default" }),
-)
-  .sort(([a], [b]) => a.localeCompare(b, "pl", { numeric: true }))
-  .map(([path, src], index) => ({ src, alt: `Podgląd strony ${index + 1} materiału`, key: path }));
-
-const PLACEHOLDER_PAGES = 2;
+// Grafiki programu (strony A4, 1414 × 2000 px): darmowy pierwszy dzień vs pełny program (okładka z products.ts)
+const DAY_ONE_COVER_ALT = "Okładka bezpłatnego pierwszego dnia programu – „Dzień 1. Zatrzymaj się”";
+const DAY_ONE_CONTENT_ALT =
+  "Strona z pierwszego dnia programu: pytanie do refleksji, miejsce na odpowiedź i „mały krok na dziś”";
 
 // Pełny program – dane z src/config/products.ts (cena, status, productUrl). Przycisk zakupu pokaże się dopiero,
 // gdy produkt będzie miał status "available" i prawdziwy productUrl.
@@ -50,17 +46,27 @@ const Ornament = ({ className, onLight = false }: { className?: string; onLight?
   </div>
 );
 
-const ProgramCover = ({ className, priority = false }: { className?: string; priority?: boolean }) => (
+const ProgramCover = ({
+  src,
+  alt,
+  className,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  priority?: boolean;
+}) => (
   <div className={`relative ${className ?? ""}`}>
-    <div className="absolute -inset-6 rounded-full bg-accent/20 blur-3xl pointer-events-none" aria-hidden="true" />
+    <div className="absolute -inset-6 rounded-full bg-accent/25 blur-3xl pointer-events-none" aria-hidden="true" />
     <img
-      src={programCover}
-      alt="Okładka programu „7 dni powrotu do siebie”"
-      width={900}
-      height={1200}
+      src={src}
+      alt={alt}
+      width={1414}
+      height={2000}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
-      className="relative w-full h-auto aspect-[3/4] rounded-xl border border-accent/30 shadow-2xl shadow-black/50"
+      className="relative w-full h-auto object-contain rounded-md ring-1 ring-accent/30 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.75)]"
     />
   </div>
 );
@@ -157,7 +163,12 @@ const FreeMaterial = () => {
             </div>
 
             <div className="flex flex-col items-center gap-8 lg:gap-10 animate-fade-in-up opacity-0 animation-delay-400">
-              <ProgramCover className="w-40 sm:w-48 lg:w-[300px] xl:w-[340px] lg:rotate-[2deg]" priority />
+              <ProgramCover
+                src={fullProgram.image}
+                alt={fullProgram.imageAlt ?? fullProgram.title}
+                className="w-40 sm:w-48 lg:w-[290px] xl:w-[320px] lg:rotate-[2deg]"
+                priority
+              />
               <div className="w-full sm:w-auto lg:hidden">
                 <FormCta onClick={goToForm} location="landing_hero" />
               </div>
@@ -227,35 +238,26 @@ const FreeMaterial = () => {
               </div>
 
               <div>
-                <div className="flex justify-center gap-4 sm:gap-6 md:gap-8">
-                  {pdfPages.length > 0
-                    ? pdfPages.map((page, index) => (
-                        <img
-                          key={page.key}
-                          src={page.src}
-                          alt={page.alt}
-                          width={1000}
-                          height={1414}
-                          loading="lazy"
-                          decoding="async"
-                          className={cn(
-                            "w-[46%] max-w-[260px] h-auto aspect-[1/1.414] object-cover rounded-md bg-white shadow-xl shadow-[#2a1b3a]/20 border border-[#e6dccd]",
-                            index % 2 ? "md:rotate-[1.5deg] md:translate-y-4" : "md:-rotate-[1.5deg]",
-                          )}
-                        />
-                      ))
-                    : Array.from({ length: PLACEHOLDER_PAGES }, (_, index) => (
-                        <div
-                          key={index}
-                          className={cn(
-                            "w-[46%] max-w-[260px] aspect-[1/1.414] rounded-md bg-[#fffdf9] shadow-xl shadow-[#2a1b3a]/15 border border-dashed border-[#cdbfa9] flex flex-col items-center justify-center gap-3 p-4 text-center",
-                            index % 2 ? "md:rotate-[1.5deg] md:translate-y-4" : "md:-rotate-[1.5deg]",
-                          )}
-                        >
-                          <FileText className="w-8 h-8 text-[#8a6418]" aria-hidden="true" />
-                          <span className="text-sm text-[#5a4a66]">Podgląd materiału</span>
-                        </div>
-                      ))}
+                {/* strona z treścią z tyłu, okładka dnia 1 z przodu – całe strony, bez przycinania */}
+                <div className="relative mx-auto w-full max-w-[340px] sm:max-w-[420px] md:max-w-[460px] pt-4 pb-6">
+                  <img
+                    src={dayOneContent}
+                    alt={DAY_ONE_CONTENT_ALT}
+                    width={1414}
+                    height={2000}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute left-0 top-0 w-[58%] h-auto object-contain rounded-sm -rotate-[5deg] shadow-[0_20px_40px_-12px_rgba(42,27,58,0.45)] ring-1 ring-[#2a1b3a]/10"
+                  />
+                  <img
+                    src={dayOneCover}
+                    alt={DAY_ONE_COVER_ALT}
+                    width={1414}
+                    height={2000}
+                    loading="lazy"
+                    decoding="async"
+                    className="relative ml-auto mt-10 w-[72%] h-auto object-contain rounded-sm rotate-[2deg] shadow-[0_28px_60px_-15px_rgba(42,27,58,0.55)] ring-1 ring-[#2a1b3a]/10"
+                  />
                 </div>
 
                 <p className="mt-8 md:mt-12 max-w-xl mx-auto text-center text-base md:text-lg text-[#3d2f4a] leading-relaxed">
@@ -305,7 +307,11 @@ const FreeMaterial = () => {
           <div className="absolute left-1/2 top-0 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" aria-hidden="true" />
 
           <div className="relative max-w-5xl mx-auto grid md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-x-16 gap-y-7 md:gap-y-8">
-            <ProgramCover className="w-32 sm:w-44 md:w-full md:max-w-[340px] mx-auto md:-rotate-[3deg] order-2 md:order-1 md:row-span-2 md:self-center" />
+            <ProgramCover
+              src={fullProgram.image}
+              alt={fullProgram.imageAlt ?? fullProgram.title}
+              className="w-36 sm:w-44 md:w-full md:max-w-[320px] mx-auto md:-rotate-[3deg] order-2 md:order-1 md:row-span-2 md:self-center"
+            />
 
             <div className="order-1 md:order-2 md:self-end">
               <Ornament />
