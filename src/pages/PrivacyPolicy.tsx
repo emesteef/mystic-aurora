@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import Footer from "@/components/Footer";
 
 const PrivacyPolicy = () => {
   usePageMeta("/polityka-prywatnosci");
@@ -165,11 +166,9 @@ const PrivacyPolicy = () => {
 
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/10 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Mystic Aurora. Wszelkie prawa zastrzeżone.
-        </div>
-
       </main>
+
+      <Footer />
     </div>
   );
 };

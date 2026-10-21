@@ -32,7 +32,7 @@ const ServicesSection = () => {
   return (
     <section className="py-14 md:py-24 px-6 relative overflow-hidden scroll-mt-20">
       {/* Main section background - lighter band for separation */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#221a2e] to-transparent pointer-events-none" />
       
       {/* Breathing gradient effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-accent/[0.02] to-primary/[0.03] pointer-events-none animate-breathe" />

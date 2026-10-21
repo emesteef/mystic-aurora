@@ -11,9 +11,9 @@ const ProductCard = ({ product }: { product: Product }) => {
     <article className="group relative flex flex-col h-full rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-xl shadow-xl shadow-black/20 transition-all duration-500 hover:border-accent/40 hover:shadow-2xl hover:shadow-black/30 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
 
-      {/* okładka: ten sam kwadratowy kontener i ta sama powierzchnia we wszystkich kartach;
+      {/* okładka: ten sam kontener (telefon 4:3, od tabletu kwadrat) i ta sama powierzchnia we wszystkich kartach;
           grafika w całości, w oryginalnych proporcjach (object-contain), bez przycinania */}
-      <div className="relative aspect-square m-3 mb-0 rounded-xl bg-[radial-gradient(ellipse_at_50%_40%,rgba(255,255,255,0.09),rgba(255,255,255,0.025)_70%)] ring-1 ring-inset ring-white/[0.06]">
+      <div className="relative aspect-[4/3] md:aspect-square m-3 mb-0 rounded-xl bg-[radial-gradient(ellipse_at_50%_40%,rgba(255,255,255,0.09),rgba(255,255,255,0.025)_70%)] ring-1 ring-inset ring-white/[0.06]">
         {/* warstwa absolutna: obraz nie rozpycha kontenera, więc wszystkie mają te same wymiary */}
         <div className="absolute inset-5 sm:inset-6 flex items-center justify-center">
           <img

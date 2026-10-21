@@ -172,7 +172,7 @@ const FreeMaterial = () => {
 
               <div className="mt-6 md:mt-8 flex flex-col items-center lg:items-start gap-3 animate-fade-in-up opacity-0 animation-delay-400">
                 <FormCta onClick={goToForm} location="landing_hero" />
-                <p className="text-sm md:text-base text-foreground/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
+                <p className="text-[0.9375rem] md:text-base text-foreground/85 drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
                   Bezpłatny PDF <span aria-hidden="true" className="mx-1.5 text-accent">•</span> Pierwszy dzień programu
                 </p>
               </div>
@@ -198,7 +198,7 @@ const FreeMaterial = () => {
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] max-w-full h-[420px] rounded-full bg-primary/15 blur-3xl pointer-events-none" aria-hidden="true" />
 
           <div className="relative max-w-3xl mx-auto text-center">
-            <h2 id="familiar-heading" className="text-4xl md:text-6xl font-heading font-light text-foreground leading-tight">
+            <h2 id="familiar-heading" className="text-4xl md:text-5xl lg:text-[3.5rem] font-heading font-light text-foreground leading-tight">
               Brzmi znajomo?
             </h2>
 
@@ -247,7 +247,7 @@ const FreeMaterial = () => {
             {/* nagłówek i opis → dwie strony obok siebie → CTA pod podglądem */}
             <div className="relative px-5 pt-10 pb-10 sm:px-10 md:px-12 md:pt-14 md:pb-14 text-center">
               <Ornament onLight className="justify-center" />
-              <h2 id="inside-heading" className="mt-3 md:mt-4 text-[2.125rem] md:text-5xl font-heading font-light text-[#2a1b3a] leading-tight">
+              <h2 id="inside-heading" className="mt-3 md:mt-4 text-4xl md:text-5xl lg:text-[3.5rem] font-heading font-light text-[#2a1b3a] leading-tight">
                 Zajrzyj do środka
               </h2>
               <p className="mt-3 md:mt-4 max-w-xl mx-auto text-[1.0625rem] md:text-lg text-[#3d2f4a] leading-relaxed text-pretty">
@@ -278,7 +278,7 @@ const FreeMaterial = () => {
           {/* jedna kolumna: nagłówek tuż nad kartą, żeby po przewinięciu tytuł i pole e-mail były widoczne razem */}
           <div className="relative max-w-2xl mx-auto">
             <div className="px-2 sm:px-0 text-center">
-              <h2 id="form-heading" className="text-[2rem] md:text-5xl font-heading font-light text-foreground leading-tight text-balance">
+              <h2 id="form-heading" className="text-[2rem] md:text-5xl lg:text-[3.5rem] font-heading font-light text-foreground leading-tight text-balance">
                 Twój pierwszy dzień zaczyna się tutaj
               </h2>
               <p className="mt-3 md:mt-4 max-w-xl mx-auto text-[1.0625rem] md:text-xl text-foreground/90 leading-relaxed text-balance">

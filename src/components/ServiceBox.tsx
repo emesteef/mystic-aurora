@@ -80,7 +80,7 @@ const ServiceBox = ({ icon: Icon, title, description, delay = "0", accentColor =
         {title}
       </h3>
       
-      <p className="relative text-muted-foreground text-sm md:text-base leading-relaxed group-hover:text-foreground/70 transition-colors duration-300">
+      <p className="relative text-muted-foreground text-[0.9375rem] md:text-base leading-relaxed group-hover:text-foreground/70 transition-colors duration-300">
         {description}
       </p>
       </div>
