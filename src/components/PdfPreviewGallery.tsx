@@ -21,17 +21,17 @@ const PdfPreviewGallery = ({ pages }: { pages: PdfPage[] }) => {
 
   return (
     <>
-      {/* telefon: przewijane poziomo duże strony; desktop: dwie strony obok siebie, lekko na siebie nachodzące */}
+      {/* zawsze dwie strony obok siebie, bez nakładania; na telefonie bez przewijania poziomego – czytanie w powiększeniu */}
       <ul
-        className="flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6 pt-2 pb-6 md:mx-0 md:px-0 md:pb-4 md:overflow-visible md:justify-center md:gap-0 [scrollbar-width:thin]"
+        className="grid grid-cols-2 items-start gap-3 sm:gap-6 md:flex md:justify-center md:gap-8 lg:gap-12 pb-2"
         aria-label="Strony podglądu materiału"
       >
         {pages.map((page, index) => (
           <li
             key={page.src}
             className={cn(
-              "snap-center shrink-0 w-[78%] sm:w-[60%] md:w-[52%] md:max-w-[340px]",
-              index === 0 ? "md:-rotate-[2.5deg] md:z-10" : "md:-ml-[6%] md:mt-8 md:rotate-[2deg] md:z-20",
+              "min-w-0 md:w-[44%] md:max-w-[400px]",
+              index === 0 ? "-rotate-1 md:-rotate-[1.5deg]" : "mt-4 rotate-1 md:mt-8 md:rotate-[1.5deg]",
             )}
           >
             <button
@@ -53,14 +53,10 @@ const PdfPreviewGallery = ({ pages }: { pages: PdfPage[] }) => {
                 decoding="async"
                 className="w-full h-auto object-contain rounded-md shadow-[0_24px_50px_-14px_rgba(42,27,58,0.5)] ring-1 ring-[#2a1b3a]/10 transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:group-hover:translate-y-0"
               />
-              <span className={cn(
-                  "absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#2a1b3a]/85 px-3 py-1.5 text-xs font-medium text-white shadow-md backdrop-blur-sm opacity-90 group-hover:opacity-100 group-focus-visible:opacity-100",
-                  // na desktopie pierwszą stronę częściowo zakrywa druga – etykieta po lewej
-                  index === 0 && "md:right-auto md:left-3",
-                )}
-              >
-                <ZoomIn className="w-3.5 h-3.5" aria-hidden="true" />
-                Powiększ
+              {/* na telefonie sama ikona (strona jest wąska), od sm z napisem; nazwę dostępną daje aria-label przycisku */}
+              <span className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 inline-flex items-center gap-1.5 rounded-full bg-[#2a1b3a]/85 p-2 sm:px-3 sm:py-1.5 text-xs font-medium text-white shadow-md opacity-90 group-hover:opacity-100 group-focus-visible:opacity-100">
+                <ZoomIn className="w-4 h-4 sm:w-3.5 sm:h-3.5" aria-hidden="true" />
+                <span className="hidden sm:inline">Powiększ</span>
               </span>
             </button>
           </li>

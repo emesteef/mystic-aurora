@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Clock, Gift, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PRODUCTS, type Product } from "@/config/products";
 import { trackFreeMaterialCta, trackProductClick, trackShopClick } from "@/lib/analytics";
@@ -11,19 +11,22 @@ const ProductCard = ({ product }: { product: Product }) => {
     <article className="group relative flex flex-col h-full rounded-2xl overflow-hidden bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-xl shadow-xl shadow-black/20 transition-all duration-500 hover:border-accent/40 hover:shadow-2xl hover:shadow-black/30 hover:-translate-y-1 motion-reduce:hover:translate-y-0">
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
 
-      {/* okładka: ta sama wysokość dla wszystkich kart, cała grafika bez przycinania (object-contain) */}
-      <div className="relative flex items-center justify-center h-56 sm:h-64 lg:h-72 px-6 pt-6 pb-2 bg-gradient-to-b from-primary/10 via-transparent to-transparent">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-3/4 rounded-full bg-accent/10 blur-3xl pointer-events-none" aria-hidden="true" />
-        <img
-          src={product.image}
-          alt={product.imageAlt ?? `Grafika produktu „${product.title}”`}
-          loading="lazy"
-          decoding="async"
-          className="relative h-full w-auto max-w-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)] transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
-        />
+      {/* okładka: ten sam kwadratowy kontener i ta sama powierzchnia we wszystkich kartach;
+          grafika w całości, w oryginalnych proporcjach (object-contain), bez przycinania */}
+      <div className="relative aspect-square m-3 mb-0 rounded-xl bg-[radial-gradient(ellipse_at_50%_40%,rgba(255,255,255,0.09),rgba(255,255,255,0.025)_70%)] ring-1 ring-inset ring-white/[0.06]">
+        {/* warstwa absolutna: obraz nie rozpycha kontenera, więc wszystkie mają te same wymiary */}
+        <div className="absolute inset-5 sm:inset-6 flex items-center justify-center">
+          <img
+            src={product.image}
+            alt={product.imageAlt ?? `Grafika produktu „${product.title}”`}
+            loading="lazy"
+            decoding="async"
+            className="max-h-full max-w-full w-auto h-auto object-contain rounded-[3px] shadow-[0_14px_28px_-10px_rgba(0,0,0,0.6)] transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
+          />
+        </div>
       </div>
 
-      <div className="relative flex flex-col flex-1 px-5 pt-5 pb-6 md:px-7 md:pb-7">
+      <div className="relative flex flex-col flex-1 px-5 pt-5 pb-6 md:px-6 md:pb-6">
         <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
           <p className="text-xs uppercase tracking-[0.18em] text-foreground/70">{product.format}</p>
           {!isAvailable && (
@@ -54,13 +57,13 @@ const ProductCard = ({ product }: { product: Product }) => {
                 </a>
               </Button>
             )}
+            {/* wyróżniony link do darmowego dnia: delikatna złota ramka (słabszy niż złoty przycisk w hero) */}
             {product.freeSampleUrl && (
               <Link
                 to={product.freeSampleUrl}
                 onClick={() => trackFreeMaterialCta("products_section")}
-                className="group/link inline-flex items-center gap-2 self-start rounded-md text-base font-medium text-accent hover:text-amber-300 underline underline-offset-4 decoration-accent/40 hover:decoration-amber-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+                className="group/link flex items-center justify-center gap-2 rounded-xl border border-accent/45 bg-accent/[0.1] px-3 py-3 text-[0.9375rem] font-medium text-accent hover:bg-accent/[0.16] hover:border-accent/70 hover:text-amber-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <Gift className="w-4 h-4 shrink-0" aria-hidden="true" />
                 Odbierz pierwszy dzień za darmo
                 <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover/link:translate-x-0.5" aria-hidden="true" />
               </Link>
@@ -100,7 +103,6 @@ const ProductsSection = () => {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-
       </div>
     </section>
   );
