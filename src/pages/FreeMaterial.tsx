@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight, ArrowUp, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +9,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { scrollToSection } from "@/lib/scroll";
 import { trackFreeMaterialCta, trackProductClick, trackShopClick } from "@/lib/analytics";
 import { PRODUCTS } from "@/config/products";
+import { FULL_PROGRAM_PREVIEW_PAGES } from "@/config/program-preview";
 import { cn } from "@/lib/utils";
 import heroBg from "@/assets/hero-bg.jpg";
 import dayOneCover from "@/assets/products/7-dni/day-1-cover.webp";
@@ -38,8 +39,21 @@ const programAvailable = fullProgram.status === "available" && !!fullProgram.pro
 const formatPrice = (price?: number) => (price !== undefined ? price.toLocaleString("pl-PL") + "\u00a0zł" : "");
 const programFacts = [
   { label: "Czas trwania", value: "7 dni" },
-  { label: "Format", value: "Program PDF" },
+  { label: "Format", value: "PDF, 26 stron" },
   { label: programAvailable ? "Cena" : "Cena planowana", value: formatPrice(fullProgram.price) },
+];
+// porównanie: bezpłatny pierwszy dzień vs pełny program (rzeczywista zawartość PDF)
+const freeVersionItems = ["Wprowadzenie do pracy własnej", "Pytania o aktualne emocje i potrzeby", "Miejsce na odpowiedzi"];
+const fullVersionItems = ["26 stron PDF", "7 tematów", "Ćwiczenia i pytania do refleksji", "Podsumowanie i plan na kolejny tydzień"];
+// tematy kolejnych dni programu (zgodne z PDF)
+const programDays = [
+  { title: "Zatrzymaj się", question: "Jak się dziś czujesz?" },
+  { title: "Zauważ", question: "Co zabiera Ci najwięcej energii?" },
+  { title: "Posłuchaj siebie", question: "Kiedy potrzebujesz zwolnić?" },
+  { title: "Wybierz siebie", question: "Jak często stawiasz siebie na końcu?" },
+  { title: "Doceniaj", question: "Co masz, a\u00a0czego już nie zauważasz?" },
+  { title: "Wspieraj siebie", question: "Czy powiedziałabyś to samo komuś, kogo kochasz?" },
+  { title: "Idź dalej", question: "Co chcesz zabrać ze sobą?" },
 ];
 
 // Paleta landingu (tylko na tej stronie): śliwka, przygaszony fiolet, ciepły grafit + jasna sekcja w beżu/lawendzie.
@@ -152,7 +166,7 @@ const FreeMaterial = () => {
                 id="hero-heading"
                 className="text-[2.5rem] md:text-6xl xl:text-7xl font-heading font-light text-foreground leading-[1.1] text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-fade-in-up opacity-0"
               >
-                7 dni powrotu do siebie
+                7 dni, żeby wrócić do siebie
               </h1>
 
               <p className="mt-3 md:mt-4 text-[1.375rem] md:text-2xl xl:text-[1.75rem] font-heading text-accent leading-snug drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] animate-fade-in-up opacity-0 animation-delay-200">
@@ -192,25 +206,25 @@ const FreeMaterial = () => {
         {/* SEKCJA 2 – BRZMI ZNAJOMO? (jak krótki wiersz: trzy zdania jedno pod drugim, złote romby, zakończenie) */}
         <section
           aria-labelledby="familiar-heading"
-          className="relative overflow-hidden px-6 pt-6 pb-12 md:pt-10 md:pb-16"
+          className="relative overflow-hidden px-6 pt-4 pb-8 md:pt-10 md:pb-16"
           style={{ background: `linear-gradient(to bottom, ${PLUM}, ${VIOLET})` }}
         >
           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] max-w-full h-[420px] rounded-full bg-primary/15 blur-3xl pointer-events-none" aria-hidden="true" />
 
           <div className="relative max-w-3xl mx-auto text-center">
-            <h2 id="familiar-heading" className="text-4xl md:text-5xl lg:text-[3.5rem] font-heading font-light text-foreground leading-tight">
+            <h2 id="familiar-heading" className="text-[2rem] md:text-5xl lg:text-[3.5rem] font-heading font-light text-foreground leading-tight">
               Brzmi znajomo?
             </h2>
 
-            <ul className="mt-6 md:mt-9">
+            <ul className="mt-4 md:mt-9">
               {situations.map((text, index) => (
                 <li key={text}>
                   {index > 0 && (
-                    <span className="flex justify-center my-3.5 md:my-5" aria-hidden="true">
+                    <span className="flex justify-center my-2 md:my-5" aria-hidden="true">
                       <span className="w-1.5 h-1.5 rotate-45 bg-accent/70" />
                     </span>
                   )}
-                  <p className="text-[1.625rem] md:text-[2.5rem] font-heading italic font-light text-foreground/95 leading-snug text-pretty">
+                  <p className="text-[1.375rem] md:text-[2.5rem] font-heading italic font-light text-foreground/95 leading-snug text-pretty">
                     {text}
                   </p>
                 </li>
@@ -218,10 +232,10 @@ const FreeMaterial = () => {
             </ul>
 
             {/* zakończenie: krótka złota linia, potem łagodne „wyjście” z sytuacji */}
-            <div className="mt-8 md:mt-11 flex justify-center" aria-hidden="true">
+            <div className="mt-5 md:mt-11 flex justify-center" aria-hidden="true">
               <span className="w-16 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent" />
             </div>
-            <p className="mt-5 md:mt-6 max-w-2xl mx-auto text-lg md:text-2xl text-foreground/85 leading-relaxed text-balance">
+            <p className="mt-3 md:mt-6 max-w-2xl mx-auto text-[1.0625rem] md:text-2xl text-foreground/85 leading-relaxed text-balance">
               Nie musisz zmieniać wszystkiego od razu.{" "}
               <span className="text-accent">Zacznij od chwili, którą poświęcisz tylko sobie.</span>
             </p>
@@ -272,21 +286,31 @@ const FreeMaterial = () => {
           id="formularz"
           aria-labelledby="form-heading"
           // scroll-mt = wysokość stałego nagłówka (h-16 / md:h-20), żeby po przewinięciu tytuł nie chował się pod nim
-          className="relative overflow-hidden px-4 sm:px-6 pt-10 pb-12 md:pt-16 md:pb-20 scroll-mt-16 md:scroll-mt-20"
+          className="relative overflow-hidden px-4 sm:px-6 pt-8 pb-10 md:pt-16 md:pb-20 scroll-mt-16 md:scroll-mt-20"
           style={{ background: `linear-gradient(to bottom, ${GRAPHITE}, ${DEEP_VIOLET})` }}
         >
-          {/* jedna kolumna: nagłówek tuż nad kartą, żeby po przewinięciu tytuł i pole e-mail były widoczne razem */}
-          <div className="relative max-w-2xl mx-auto">
-            <div className="px-2 sm:px-0 text-center">
+          {/* delikatne rozjaśnienie tła pod kartą – formularz jest punktem skupienia sekcji (gradient, bez filtra blur) */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "radial-gradient(ellipse 60% 55% at 68% 52%, rgba(139,92,246,0.16), transparent 70%)" }}
+          />
+
+          {/* telefon: nagłówek tuż nad kartą (po przewinięciu widać tytuł i pole e-mail);
+              desktop: tekst po lewej, karta formularza (maks. 580 px) po prawej */}
+          <div className="relative max-w-xl lg:max-w-5xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_560px] items-center gap-6 lg:gap-14">
+            <div className="px-2 sm:px-0 text-center lg:text-left">
               <h2 id="form-heading" className="text-[2rem] md:text-5xl lg:text-[3.5rem] font-heading font-light text-foreground leading-tight text-balance">
                 Twój pierwszy dzień zaczyna się tutaj
               </h2>
-              <p className="mt-3 md:mt-4 max-w-xl mx-auto text-[1.0625rem] md:text-xl text-foreground/90 leading-relaxed text-balance">
-                Podaj swój adres e-mail, a&nbsp;otrzymasz bezpłatnie pierwszy dzień programu „7 dni powrotu do siebie”.
+              <p className="mt-3 md:mt-5 max-w-md lg:max-w-[27rem] mx-auto lg:mx-0 text-[1.0625rem] md:text-xl text-foreground/90 leading-relaxed text-balance lg:text-pretty">
+                Podaj swój adres e-mail, a&nbsp;otrzymasz bezpłatnie pierwszy dzień programu „7 dni, żeby wrócić do siebie”.
               </p>
             </div>
 
-            <div className="relative mt-7 md:mt-9 px-5 py-7 sm:px-10 sm:py-9 md:px-12 md:py-10 rounded-3xl bg-gradient-to-b from-[#3a2e49] to-[#2a2134] border border-white/20 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.75),0_0_80px_-24px_rgba(233,185,73,0.3)]">
+            <div className="relative px-5 py-6 sm:px-9 sm:py-8 md:px-10 md:py-9 rounded-3xl bg-gradient-to-b from-[#40324f] to-[#2d2439] border border-accent/30 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.8),0_0_90px_-20px_rgba(233,185,73,0.32)]">
+              {/* cienka złota linia u góry karty */}
+              <div className="absolute top-0 left-10 right-10 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" aria-hidden="true" />
               <FreeMaterialForm ref={emailRef} />
             </div>
           </div>
@@ -309,6 +333,11 @@ const FreeMaterial = () => {
               <p className="mt-5 max-w-xl mx-auto md:mx-0 text-[1.0625rem] md:text-lg text-foreground/90 leading-relaxed text-pretty">
                 Pierwszy dzień pozwoli Ci zatrzymać się i&nbsp;przyjrzeć własnym potrzebom. Jeśli zechcesz kontynuować,
                 pełny program poprowadzi Cię przez kolejne sześć dni z&nbsp;nowymi tematami i&nbsp;pytaniami do refleksji.
+              </p>
+              <p className="mt-3 max-w-xl mx-auto md:mx-0 text-[1.0625rem] md:text-lg text-foreground/80 leading-relaxed text-pretty">
+                Przez siedem dni przyjrzysz się temu, co czujesz, czego potrzebujesz i&nbsp;jak traktujesz samą siebie. Każdy
+                dzień to kolejny temat, pytania do refleksji i&nbsp;mały krok, który możesz wykonać we własnym tempie. Na koniec
+                wrócisz do swoich pierwszych odpowiedzi i&nbsp;zastanowisz się, co chcesz zmienić w&nbsp;kolejnym tygodniu.
               </p>
 
               {/* najważniejsze informacje jako spokojna lista: czas, format, cena – bez presji sprzedażowej */}
@@ -353,14 +382,113 @@ const FreeMaterial = () => {
               <ProgramCover
                 src={fullProgram.image}
                 alt={fullProgram.imageAlt ?? fullProgram.title}
-                className="w-56 sm:w-64 md:w-full md:max-w-[440px] md:-rotate-[1.5deg]"
+                className="w-48 sm:w-64 md:w-full md:max-w-[440px] md:-rotate-[1.5deg]"
               />
             </div>
+          </div>
+
+          {/* SIEDEM DNI: zwarta oś z numerami w złotych kółkach; desktop: dni 1–4 i 5–7 w dwóch kolumnach */}
+          <div className="relative max-w-4xl mx-auto mt-10 md:mt-16 pt-8 md:pt-12 border-t border-white/10">
+            <h3 className="text-center text-2xl md:text-[2rem] font-heading font-light text-foreground">
+              Siedem dni, siedem tematów
+            </h3>
+
+            <ol className="mt-6 md:mt-9 max-w-md md:max-w-none mx-auto grid md:grid-flow-col md:grid-rows-4 md:grid-cols-2 md:gap-x-16">
+              {programDays.map(({ title, question }, index) => (
+                <li
+                  key={title}
+                  className={cn(
+                    "relative flex gap-3.5 md:gap-4 pb-4 md:pb-5",
+                    // cienka linia łącząca kolejne dni (bez linii po ostatnim dniu w kolumnie)
+                    "before:absolute before:left-[15px] md:before:left-[17px] before:top-9 md:before:top-10 before:bottom-1 before:w-px before:bg-accent/25",
+                    index === programDays.length - 1 && "before:hidden",
+                    index === 3 && "md:before:hidden",
+                  )}
+                >
+                  <span
+                    className="relative z-10 flex items-center justify-center w-8 h-8 md:w-9 md:h-9 shrink-0 rounded-full border border-accent/50 bg-[#24182b] font-heading text-base md:text-lg text-accent"
+                    aria-hidden="true"
+                  >
+                    {index + 1}
+                  </span>
+                  <div className="pt-0.5 md:pt-1 min-w-0">
+                    <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                      <span className="font-heading text-lg md:text-xl text-foreground leading-tight">
+                        <span className="sr-only">Dzień {index + 1}: </span>
+                        {title}
+                      </span>
+                      {index === 0 && (
+                        <span className="rounded-full border border-accent/40 bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                          bezpłatny
+                        </span>
+                      )}
+                    </p>
+                    <p className="mt-0.5 md:mt-1 text-[0.9375rem] text-foreground/75 leading-snug">{question}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            {/* PORÓWNANIE WERSJI: jeden lekki blok z dwiema kolumnami (telefon: jedna pod drugą), bez osobnych dużych kart */}
+            <div className="mt-6 md:mt-10 grid md:grid-cols-2 rounded-2xl border border-white/10 bg-white/[0.03] divide-y md:divide-y-0 md:divide-x divide-white/10">
+              <div className="px-5 py-5 md:px-8 md:py-7">
+                <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent">Bezpłatnie</p>
+                <h4 className="mt-1.5 font-heading text-xl md:text-2xl text-foreground">Pierwszy dzień programu</h4>
+                <ul className="mt-3 space-y-1.5">
+                  {freeVersionItems.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-[0.9375rem] md:text-base text-foreground/85 leading-snug">
+                      <span className="mt-[0.45em] w-1.5 h-1.5 shrink-0 rotate-45 bg-accent/80" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="px-5 py-5 md:px-8 md:py-7">
+                <p className="text-xs font-medium uppercase tracking-[0.16em] text-foreground/70">
+                  Pełny program – {formatPrice(fullProgram.price)}
+                  {!programAvailable && <span className="normal-case tracking-normal text-foreground/60"> (cena planowana)</span>}
+                </p>
+                <h4 className="mt-1.5 font-heading text-xl md:text-2xl text-foreground">Wszystkie 7 dni</h4>
+                <ul className="mt-3 space-y-1.5">
+                  {fullVersionItems.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-[0.9375rem] md:text-base text-foreground/85 leading-snug">
+                      <span className="mt-[0.45em] w-1.5 h-1.5 shrink-0 rotate-45 bg-foreground/50" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* podgląd stron pełnego programu – pokazuje się dopiero, gdy w src/config/program-preview.ts są prawdziwe pliki */}
+            {FULL_PROGRAM_PREVIEW_PAGES.length > 0 && (
+              <div className="mt-8 md:mt-10">
+                <h4 className="text-center font-heading text-xl md:text-2xl text-foreground">Fragmenty pełnego programu</h4>
+                <div className="mt-5 md:mt-6">
+                  <PdfPreviewGallery pages={FULL_PROGRAM_PREVIEW_PAGES} />
+                </div>
+              </div>
+            )}
+
+            {/* powrót do głównego celu strony – zapisu po bezpłatny pierwszy dzień */}
+            <p className="mt-6 md:mt-8 text-center">
+              <a
+                href="#formularz"
+                onClick={(e) => {
+                  e.preventDefault();
+                  goToForm();
+                }}
+                className="inline-flex items-center gap-2 rounded-sm text-base font-medium text-accent underline underline-offset-4 decoration-accent/40 hover:text-amber-300 hover:decoration-amber-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              >
+                Zacznij od bezpłatnego pierwszego dnia
+                <ArrowUp className="w-4 h-4" aria-hidden="true" />
+              </a>
+            </p>
           </div>
         </section>
       </main>
 
-      <Footer />
+      <Footer variant="minimal" />
     </div>
   );
 };

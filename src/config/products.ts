@@ -34,13 +34,13 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: "7-dni-powrotu-do-siebie",
-    title: "7 dni powrotu do siebie",
-    format: "Program PDF",
+    title: "7 dni, żeby wrócić do siebie",
+    format: "PDF, 26 stron",
     price: 39,
     description:
       "Siedem dni pytań i ćwiczeń, które zachęcają do zatrzymania się, przyjrzenia emocjom i lepszego poznania własnych potrzeb.",
     image: siedemDniCover,
-    imageAlt: "Okładka pełnego programu „7 dni powrotu do siebie”",
+    imageAlt: "Okładka pełnego programu „7 dni, żeby wrócić do siebie”",
     status: "comingSoon",
     freeSampleUrl: "/7-dni-powrotu-do-siebie",
   },

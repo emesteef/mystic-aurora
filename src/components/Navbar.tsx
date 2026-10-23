@@ -107,7 +107,19 @@ const Navbar = () => {
       <Link
         key={item.label}
         to={item.to!}
-        onClick={() => item.to === "/7-dni-powrotu-do-siebie" && trackFreeMaterialCta(mobile ? "nav_mobile" : "nav_desktop")}
+        onClick={(e) => {
+          if (item.to === "/7-dni-powrotu-do-siebie") trackFreeMaterialCta(mobile ? "nav_mobile" : "nav_desktop");
+          // link do strony, na której już jesteśmy: przewijamy do formularza (jeśli jest), zamiast nic nie robić
+          if (item.to === location.pathname) {
+            e.preventDefault();
+            setIsOpen(false);
+            // po zamknięciu menu mobilnego (zdjęcie blokady przewijania) – dlatego z opóźnieniem
+            window.setTimeout(() => {
+              if (document.getElementById("formularz")) scrollToSection("formularz");
+              else window.scrollTo({ top: 0, behavior: "smooth" });
+            }, 50);
+          }
+        }}
         className={className}
       >
         {item.label}

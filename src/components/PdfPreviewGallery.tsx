@@ -21,7 +21,7 @@ const PdfPreviewGallery = ({ pages }: { pages: PdfPage[] }) => {
 
   return (
     <>
-      {/* zawsze dwie strony obok siebie, bez nakładania; na telefonie bez przewijania poziomego – czytanie w powiększeniu */}
+      {/* strony obok siebie, bez nakładania (2 lub 3 na desktopie; na telefonie po dwie w rzędzie, bez przewijania poziomego) */}
       <ul
         className="grid grid-cols-2 items-start gap-3 sm:gap-6 md:flex md:justify-center md:gap-8 lg:gap-12 pb-2"
         aria-label="Strony podglądu materiału"
@@ -30,8 +30,10 @@ const PdfPreviewGallery = ({ pages }: { pages: PdfPage[] }) => {
           <li
             key={page.src}
             className={cn(
-              "min-w-0 md:w-[44%] md:max-w-[400px]",
-              index === 0 ? "-rotate-1 md:-rotate-[1.5deg]" : "mt-4 rotate-1 md:mt-8 md:rotate-[1.5deg]",
+              "min-w-0",
+              pages.length > 2 ? "md:w-[30%] md:max-w-[320px]" : "md:w-[44%] md:max-w-[400px]",
+              // co druga strona lekko niżej i obrócona w drugą stronę
+              index % 2 === 0 ? "-rotate-1 md:-rotate-[1.5deg]" : "mt-4 rotate-1 md:mt-8 md:rotate-[1.5deg]",
             )}
           >
             <button

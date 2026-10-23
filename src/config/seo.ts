@@ -17,9 +17,9 @@ export const PAGE_SEO = {
       "Zatrzymaj się na chwilę i wróć do siebie. Refleksje, inspiracje i materiały, które łączą rozwój osobisty z duchowością.",
   },
   "/7-dni-powrotu-do-siebie": {
-    title: "7 dni powrotu do siebie – darmowy materiał | Mystic Aurora",
+    title: "7 dni, żeby wrócić do siebie – darmowy materiał | Mystic Aurora",
     description:
-      "Pobierz bezpłatnie pierwszy dzień programu „7 dni powrotu do siebie”: krótkie wprowadzenie i pytania do samodzielnej refleksji nad własnymi potrzebami.",
+      "Pobierz bezpłatnie pierwszy dzień programu „7 dni, żeby wrócić do siebie”: krótkie wprowadzenie i pytania do samodzielnej refleksji nad własnymi potrzebami.",
   },
   "/numerologia": {
     title: "Kalkulator numerologiczny | Mystic Aurora",

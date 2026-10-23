@@ -35,7 +35,7 @@ const validateEmail = (value: string): string | null => {
 const FieldError = ({ id, children }: { id: string; children: React.ReactNode }) => (
   <p
     id={id}
-    className="mt-2.5 flex items-start gap-2 rounded-lg border-l-[3px] border-red-400 bg-red-500/[0.14] px-3 py-2.5 text-[0.9375rem] font-medium text-red-100 leading-snug"
+    className="mt-2.5 flex items-start gap-2 rounded-lg border-l-[3px] border-red-400 bg-red-500/[0.2] px-3 py-2.5 text-[0.9375rem] font-medium text-red-50 leading-snug"
   >
     <CircleAlert className="w-[18px] h-[18px] mt-px shrink-0 text-red-300" aria-hidden="true" />
     <span>{children}</span>
@@ -43,7 +43,7 @@ const FieldError = ({ id, children }: { id: string; children: React.ReactNode })
 );
 
 const checkboxClass =
-  "mt-[3px] h-6 w-6 shrink-0 rounded-[5px] border-2 border-white/60 bg-white/[0.06] data-[state=checked]:bg-accent data-[state=checked]:border-accent data-[state=checked]:text-accent-foreground [&_svg]:h-4 [&_svg]:w-4 focus-visible:ring-accent focus-visible:ring-offset-[#2a2134]";
+  "mt-[3px] h-6 w-6 shrink-0 rounded-[5px] border-2 border-white/75 bg-white/[0.08] data-[state=checked]:bg-accent data-[state=checked]:border-accent data-[state=checked]:text-accent-foreground [&_svg]:h-4 [&_svg]:w-4 focus-visible:ring-accent focus-visible:ring-offset-[#2d2439]";
 
 const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   const [email, setEmail] = useState("");
@@ -126,11 +126,11 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
 
       <div>
         <label htmlFor="free-material-email" className="block text-base font-medium text-foreground mb-2">
-          Adres e-mail <span className="text-foreground/70 font-normal text-sm">(wymagane)</span>
+          Adres e-mail <span className="text-foreground/80 font-normal text-sm">(wymagane)</span>
         </label>
         <div className="relative group">
           <Mail
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/60 group-focus-within:text-accent transition-colors duration-300"
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/75 group-focus-within:text-accent transition-colors duration-300"
             aria-hidden="true"
           />
           <Input
@@ -152,7 +152,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
             aria-describedby={showEmailError ? "free-material-email-error" : undefined}
             disabled={isSubmitting}
             className={cn(
-              "pl-12 h-14 md:h-16 text-[1.0625rem] md:text-lg rounded-xl bg-white/[0.09] border-2 border-white/30 placeholder:text-foreground/55 focus:border-accent focus:bg-white/[0.12] focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-0 transition-colors duration-200",
+              "pl-12 h-14 md:h-16 text-[1.0625rem] md:text-lg rounded-xl bg-white/[0.11] border-2 border-white/45 placeholder:text-foreground/65 focus:border-accent focus:bg-white/[0.12] focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-0 transition-colors duration-200",
               showEmailError && "border-red-400 focus:border-red-400 focus-visible:ring-red-400/40",
             )}
           />
@@ -178,13 +178,13 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
             />
             <label
               htmlFor="free-material-privacy"
-              className="text-base text-foreground/90 leading-relaxed cursor-pointer select-none"
+              className="text-base text-foreground leading-relaxed cursor-pointer select-none"
             >
               Chcę otrzymać bezpłatny materiał PDF na podany adres e-mail i akceptuję{" "}
               <Link to="/polityka-prywatnosci" className="underline underline-offset-2 hover:text-accent transition-colors">
                 Politykę Prywatności
               </Link>
-              . <span className="text-foreground/65 text-sm">(wymagane)</span>
+              . <span className="text-foreground/75 text-sm">(wymagane)</span>
             </label>
           </div>
           {showPrivacyError && (
@@ -204,10 +204,10 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
           />
           <label
             htmlFor="free-material-newsletter"
-            className="text-base text-foreground/90 leading-relaxed cursor-pointer select-none"
+            className="text-base text-foreground leading-relaxed cursor-pointer select-none"
           >
             Chcę też otrzymywać newsletter Mystic Aurora z inspiracjami i informacjami o nowych materiałach.{" "}
-            <span className="text-foreground/65 text-sm">(opcjonalnie)</span>
+            <span className="text-foreground/75 text-sm">(opcjonalnie)</span>
           </label>
         </div>
       </fieldset>
@@ -220,7 +220,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
           // bez tego wciśnięcie przycisku zdejmuje fokus z pola e-mail, pojawia się komunikat błędu, przycisk
           // przesuwa się w dół i kliknięcie „przepada” – formularz się nie wysyła. Klawiatura działa bez zmian.
           onMouseDown={(e) => e.preventDefault()}
-          className="w-full min-h-[3.75rem] h-auto py-3 px-6 bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 text-accent-foreground text-lg font-semibold rounded-xl shadow-[0_12px_30px_-8px_hsl(42_85%_55%/0.6)] hover:shadow-[0_16px_40px_-8px_hsl(42_85%_55%/0.75)] hover:-translate-y-0.5 active:translate-y-0 motion-reduce:hover:translate-y-0 transition-all duration-200 whitespace-normal focus-visible:ring-accent focus-visible:ring-offset-[#2a2134]"
+          className="w-full min-h-[3.75rem] h-auto py-3 px-6 bg-gradient-to-r from-accent to-amber-500 hover:from-accent/90 hover:to-amber-500/90 text-accent-foreground text-lg font-semibold rounded-xl shadow-[0_12px_30px_-8px_hsl(42_85%_55%/0.6)] hover:shadow-[0_16px_40px_-8px_hsl(42_85%_55%/0.75)] hover:-translate-y-0.5 active:translate-y-0 motion-reduce:hover:translate-y-0 transition-all duration-200 whitespace-normal focus-visible:ring-accent focus-visible:ring-offset-[#2d2439]"
         >
           {isSubmitting ? (
             <>
@@ -232,7 +232,6 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
           )}
         </Button>
 
-        <p className="text-center text-[0.9375rem] text-foreground/85">Materiał PDF otrzymasz na podany adres <span className="whitespace-nowrap">e-mail</span>.</p>
 
         {status === "error" && (
           <FieldError id="free-material-submit-error">
@@ -241,7 +240,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
         )}
       </div>
 
-      <div className="text-sm text-foreground/75 leading-relaxed text-center sm:text-left">
+      <div className="text-sm text-foreground/80 leading-relaxed text-center sm:text-left">
         <p>
           Adres e-mail wykorzystamy do wysłania materiału{newsletter ? " i newslettera" : ""}. Z newslettera możesz
           wypisać się w każdej chwili. Szczegóły znajdziesz w{" "}

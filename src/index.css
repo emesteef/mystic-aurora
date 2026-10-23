@@ -110,6 +110,14 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    /* Cormorant Garamond ma domyślnie cyfry nautyczne (schodzą pod linię) – włączamy cyfry wyrównane (OpenType lnum).
+       Outfit ma je domyślnie, więc tam nic się nie zmienia. */
+    font-variant-numeric: lining-nums;
+  }
+
+  /* pola formularzy domyślnie nie dziedziczą ustawień cyfr */
+  input, textarea, select, button {
+    font-variant-numeric: inherit;
   }
 
   h1, h2, h3, h4, h5, h6 {

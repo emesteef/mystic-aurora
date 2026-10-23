@@ -35,7 +35,7 @@ const FreeMaterialCtaSection = () => {
             </h2>
 
             <p className="text-muted-foreground text-base md:text-lg mb-8 md:mb-10 max-w-lg mx-auto leading-relaxed">
-              Pobierz bezpłatnie pierwszy dzień programu „7 dni powrotu do siebie” i znajdź chwilę, żeby przyjrzeć się
+              Pobierz bezpłatnie pierwszy dzień programu „7 dni, żeby wrócić do siebie” i znajdź chwilę, żeby przyjrzeć się
               własnym potrzebom.
             </p>
 
