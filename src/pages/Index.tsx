@@ -53,7 +53,7 @@ const Index = () => {
         <div className="absolute bottom-20 right-10 w-3 h-3 rounded-full bg-primary/30 animate-float animation-delay-600" />
         
         {/* Main content */}
-        <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-20 pb-12 md:pt-32 md:pb-24 text-center">
+        <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-[4.75rem] pb-10 md:pt-32 md:pb-24 text-center">
           {/* Logo */}
           <div className="animate-fade-in-up opacity-0">
             <div className="relative">
@@ -67,17 +67,18 @@ const Index = () => {
           </div>
           
           {/* Headline */}
-          <h1 className="mt-4 md:mt-8 max-w-4xl text-4xl md:text-6xl lg:text-7xl font-heading font-light text-foreground tracking-wide leading-tight text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-fade-in-up opacity-0 animation-delay-200">
+          <h1 className="mt-3 md:mt-8 max-w-4xl text-4xl md:text-6xl lg:text-7xl font-heading font-light text-foreground tracking-wide leading-tight text-balance drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] animate-fade-in-up opacity-0 animation-delay-200">
             Zatrzymaj się na chwilę. Wróć do siebie.
           </h1>
 
           {/* Tagline */}
-          <p className="mt-4 md:mt-6 text-lg md:text-xl text-foreground/80 font-light text-center max-w-2xl leading-relaxed drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] animate-fade-in-up opacity-0 animation-delay-400">
-            Odkrywaj siebie, swoje emocje i intuicję. Znajdź przestrzeń na refleksję, spokój i świadome wybory.
+          <p className="mt-3 md:mt-6 text-[1.0625rem] md:text-xl text-foreground/80 font-light text-center max-w-2xl leading-relaxed drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] animate-fade-in-up opacity-0 animation-delay-400">
+            Odkrywaj materiały do samodzielnej refleksji, poznawania emocji i rozwijania intuicji. Znajdź chwilę dla siebie
+            i zacznij od małego kroku.
           </p>
 
           {/* CTA Buttons */}
-          <div className="mt-8 md:mt-10 w-full sm:w-auto flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 animate-fade-in-up opacity-0 animation-delay-400">
+          <div className="mt-6 md:mt-10 w-full sm:w-auto flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 animate-fade-in-up opacity-0 animation-delay-400">
             {/* główne CTA – złote */}
             <Button
               asChild
@@ -86,7 +87,7 @@ const Index = () => {
             >
               <Link to="/7-dni-powrotu-do-siebie" onClick={() => trackFreeMaterialCta("home_hero")}>
                 <Gift className="w-5 h-5 mr-2" aria-hidden="true" />
-                Odbierz darmowy materiał
+                Odbierz darmowy dzień
               </Link>
             </Button>
             {/* drugie CTA – mniej wyróżnione */}
@@ -103,7 +104,7 @@ const Index = () => {
                 }}
               >
                 <ShoppingBag className="w-5 h-5 mr-2" aria-hidden="true" />
-                Odkryj nasze produkty
+                Poznaj nasze produkty
               </a>
             </Button>
           </div>

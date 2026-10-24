@@ -26,6 +26,17 @@ export const PAGE_SEO = {
     description:
       "Wybierz datę urodzenia i sprawdź swoje liczby numerologiczne. Obliczenia wykonywane są w Twojej przeglądarce.",
   },
+  "/program-7-dni": {
+    title: "7 dni, żeby wrócić do siebie – program PDF | Mystic Aurora",
+    description:
+      "Program PDF na 7 dni: 26 stron, siedem tematów, pytania i ćwiczenia do refleksji oraz podsumowanie z planem na kolejny tydzień.",
+  },
+  // strona po zapisie – bez indeksowania i poza mapą strony
+  "/dziekujemy": {
+    title: "Dziękujemy | Mystic Aurora",
+    description: "Potwierdzenie zgłoszenia po bezpłatny pierwszy dzień programu „7 dni, żeby wrócić do siebie”.",
+    noindex: true,
+  },
   "/polityka-prywatnosci": {
     title: "Polityka Prywatności | Mystic Aurora",
     description: "Informacje o przetwarzaniu danych osobowych i plikach cookies na stronie mysticaurora.pl.",

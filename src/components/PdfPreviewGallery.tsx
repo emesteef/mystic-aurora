@@ -21,9 +21,12 @@ const PdfPreviewGallery = ({ pages }: { pages: PdfPage[] }) => {
 
   return (
     <>
-      {/* strony obok siebie, bez nakładania (2 lub 3 na desktopie; na telefonie po dwie w rzędzie, bez przewijania poziomego) */}
+      {/* strony obok siebie, bez nakładania (2 lub 3 w rzędzie także na telefonie, bez przewijania poziomego) */}
       <ul
-        className="grid grid-cols-2 items-start gap-3 sm:gap-6 md:flex md:justify-center md:gap-8 lg:gap-12 pb-2"
+        className={cn(
+          "grid items-start sm:gap-6 md:flex md:justify-center md:gap-8 lg:gap-12 pb-2",
+          pages.length > 2 ? "grid-cols-3 gap-2.5" : "grid-cols-2 gap-3",
+        )}
         aria-label="Strony podglądu materiału"
       >
         {pages.map((page, index) => (

@@ -19,6 +19,7 @@ export interface Product {
   productUrl?: string;
   status: ProductStatus;
   freeSampleUrl?: string; // np. darmowy pierwszy dzień programu
+  detailsUrl?: string; // strona z opisem produktu na tej stronie (nie sklep), np. /program-7-dni
 }
 
 export const PRODUCTS: Product[] = [
@@ -43,6 +44,7 @@ export const PRODUCTS: Product[] = [
     imageAlt: "Okładka pełnego programu „7 dni, żeby wrócić do siebie”",
     status: "comingSoon",
     freeSampleUrl: "/7-dni-powrotu-do-siebie",
+    detailsUrl: "/program-7-dni",
   },
   {
     id: "krag-ognia",

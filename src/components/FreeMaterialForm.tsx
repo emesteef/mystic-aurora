@@ -1,10 +1,11 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CheckCircle2, CircleAlert, Loader2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import type { ThankYouState } from "@/config/free-material";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -17,11 +18,12 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 // TODO: podłączyć wysyłkę (np. /.netlify/functions/subscribe). Na razie tylko symulacja.
 // Po podłączeniu: przy sukcesie i zaznaczonym newsletterze wywołać trackNewsletterSignup("landing_free_material").
-// Zwraca deliveryConfirmed: true dopiero, gdy backend potwierdzi wysyłkę PDF – wtedy formularz o niej informuje.
-const submitFreeMaterial = async (data: FormData): Promise<{ deliveryConfirmed: boolean }> => {
+// Zwraca accepted: true dopiero, gdy backend potwierdzi przyjęcie zgłoszenia – wtedy formularz przechodzi na /dziekujemy.
+// Błąd wysyłki = wyjątek (formularz pokazuje komunikat i zostawia wpisane dane).
+const submitFreeMaterial = async (data: FormData): Promise<{ accepted: boolean }> => {
   void data;
   await new Promise((resolve) => setTimeout(resolve, 800));
-  return { deliveryConfirmed: false };
+  return { accepted: false };
 };
 
 const validateEmail = (value: string): string | null => {
@@ -32,11 +34,9 @@ const validateEmail = (value: string): string | null => {
   return null;
 };
 
-const FieldError = ({ id, children }: { id: string; children: React.ReactNode }) => (
-  <p
-    id={id}
-    className="mt-2.5 flex items-start gap-2 rounded-lg border-l-[3px] border-red-400 bg-red-500/[0.2] px-3 py-2.5 text-[0.9375rem] font-medium text-red-50 leading-snug"
-  >
+// komunikat błędu bezpośrednio pod polem: ikona + tekst, bez tła i ramki
+const FieldError = ({ id, children, role }: { id: string; children: React.ReactNode; role?: "alert" }) => (
+  <p id={id} role={role} className="mt-2 flex items-start gap-2 text-[0.9375rem] font-medium text-red-200 leading-snug">
     <CircleAlert className="w-[18px] h-[18px] mt-px shrink-0 text-red-300" aria-hidden="true" />
     <span>{children}</span>
   </p>
@@ -53,11 +53,13 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   const [emailTouched, setEmailTouched] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [announcement, setAnnouncement] = useState("");
-  const [deliveryConfirmed, setDeliveryConfirmed] = useState(false);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const privacyRef = useRef<HTMLButtonElement>(null);
   const successRef = useRef<HTMLHeadingElement>(null);
+  const navigate = useNavigate();
+  // blokada wielokrotnego wysłania (np. szybki podwójny Enter, zanim przycisk zdąży się wyłączyć)
+  const submittingRef = useRef(false);
   useImperativeHandle(ref, () => emailInputRef.current!);
 
   const emailError = validateEmail(email);
@@ -73,6 +75,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submittingRef.current) return;
     setSubmitAttempted(true);
 
     if (emailError || privacyError) {
@@ -83,16 +86,25 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
       return;
     }
 
+    submittingRef.current = true;
     setAnnouncement("Wysyłanie formularza…");
     setStatus("submitting");
     try {
+      // sukces pokazujemy dopiero po odpowiedzi wysyłki; wpisany adres zostaje w polu przy błędzie
       const result = await submitFreeMaterial({ email: email.trim(), newsletter });
-      setDeliveryConfirmed(result.deliveryConfirmed);
+      if (result.accepted) {
+        // zgłoszenie przyjęte przez backend → strona podziękowania (bez stanu nie da się na nią wejść)
+        navigate("/dziekujemy", { state: { submitted: true } satisfies ThankYouState });
+        return;
+      }
+      // symulacja (brak podłączonej wysyłki): dotychczasowy komunikat w miejscu formularza
       setAnnouncement("");
       setStatus("success");
     } catch {
-      setAnnouncement("Nie udało się wysłać formularza.");
+      setAnnouncement("");
       setStatus("error");
+    } finally {
+      submittingRef.current = false;
     }
   };
 
@@ -103,14 +115,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
         <h3 ref={successRef} tabIndex={-1} className="text-2xl font-heading text-foreground mb-3 outline-none">
           Dziękujemy!
         </h3>
-        {deliveryConfirmed ? (
-          <p className="text-lg text-foreground/85 leading-relaxed">
-            Materiał wyślemy na adres <span className="text-foreground break-all">{email.trim()}</span>. Sprawdź swoją
-            skrzynkę, także folder „Oferty” lub „Spam”.
-          </p>
-        ) : (
-          <p className="text-lg text-foreground/85 leading-relaxed">Formularz został wysłany.</p>
-        )}
+        <p className="text-lg text-foreground/85 leading-relaxed">Formularz został wysłany.</p>
       </div>
     );
   }
@@ -118,7 +123,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   const isSubmitting = status === "submitting";
 
   return (
-    <form onSubmit={handleSubmit} noValidate aria-busy={isSubmitting} className="flex flex-col gap-6 md:gap-7 text-left">
+    <form onSubmit={handleSubmit} noValidate aria-busy={isSubmitting} className="flex flex-col gap-5 md:gap-6 text-left">
       {/* komunikaty dla czytników ekranu (podsumowanie błędów, stan wysyłania) */}
       <p className="sr-only" role="status" aria-live="polite">
         {announcement}
@@ -160,7 +165,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
         {showEmailError && <FieldError id="free-material-email-error">{emailError}</FieldError>}
       </div>
 
-      <fieldset className="space-y-5 border-t border-white/10 pt-1">
+      <fieldset className="space-y-4">
         <legend className="sr-only">Zgody</legend>
 
         <div>
@@ -194,7 +199,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
           )}
         </div>
 
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4 border-t border-white/10 pt-4">
           <Checkbox
             id="free-material-newsletter"
             checked={newsletter}
@@ -234,7 +239,7 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
 
 
         {status === "error" && (
-          <FieldError id="free-material-submit-error">
+          <FieldError id="free-material-submit-error" role="alert">
             Nie udało się wysłać formularza. Spróbuj ponownie za chwilę.
           </FieldError>
         )}

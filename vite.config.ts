@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
 import { componentTagger } from "lovable-tagger";
-import { PAGE_SEO, SITE_URL } from "./src/config/seo";
+import { PAGE_SEO, SITE_URL, type PageSeo } from "./src/config/seo";
 
 const escapeAttr = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -17,7 +17,7 @@ const seoPages = (): Plugin => ({
     const distDir = path.resolve(__dirname, "dist");
     const template = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
 
-    for (const [route, seo] of Object.entries(PAGE_SEO)) {
+    for (const [route, seo] of Object.entries(PAGE_SEO) as [string, PageSeo][]) {
       if (route === "/") continue;
       const url = `${SITE_URL}${route}`;
       const title = escapeAttr(seo.title);
@@ -30,7 +30,8 @@ const seoPages = (): Plugin => ({
         .replace(/(<meta property="og:description" content=")[^"]*/, `$1${description}`)
         .replace(/(<meta property="og:url" content=")[^"]*/, `$1${url}`)
         .replace(/(<meta name="twitter:title" content=")[^"]*/, `$1${title}`)
-        .replace(/(<meta name="twitter:description" content=")[^"]*/, `$1${description}`);
+        .replace(/(<meta name="twitter:description" content=")[^"]*/, `$1${description}`)
+        .replace("</head>", seo.noindex ? '    <meta name="robots" content="noindex" />\n  </head>' : "</head>");
       fs.writeFileSync(path.join(distDir, `${route.slice(1)}.html`), html);
     }
   },

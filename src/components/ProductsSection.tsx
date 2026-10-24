@@ -41,7 +41,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <p className="text-base text-muted-foreground leading-relaxed">{product.description}</p>
 
         {/* akcje tylko wtedy, gdy coś faktycznie robią; mt-auto wyrównuje je do dołu kart */}
-        {(isAvailable || product.freeSampleUrl) && (
+        {(isAvailable || product.freeSampleUrl || product.detailsUrl) && (
           <div className="mt-auto pt-5 flex flex-col gap-3">
             {isAvailable && (
               <Button asChild variant="heroOutline" size="lg" className="w-full rounded-xl">
@@ -66,6 +66,15 @@ const ProductCard = ({ product }: { product: Product }) => {
               >
                 Odbierz pierwszy dzień za darmo
                 <ArrowRight className="w-4 h-4 shrink-0 transition-transform group-hover/link:translate-x-0.5" aria-hidden="true" />
+              </Link>
+            )}
+            {/* opis całego programu na tej stronie – zwykły link tekstowy (to nie jest zakup) */}
+            {product.detailsUrl && (
+              <Link
+                to={product.detailsUrl}
+                className="self-center inline-flex items-center gap-1.5 rounded-sm py-1 text-[0.9375rem] font-medium text-foreground/85 underline underline-offset-4 decoration-white/30 hover:text-accent hover:decoration-accent/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                Zobacz pełny program
               </Link>
             )}
           </div>

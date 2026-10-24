@@ -205,10 +205,10 @@
   height: 10rem !important;
 }
 
-/* Na telefonie mniejsze logo w hero – pełny rozmiar zawyżał wysokość sekcji */
+/* Na telefonie mniejsze logo w hero – CTA ma być widoczne możliwie wysoko */
 @media (max-width: 767px) {
   .mystic-aurora-logo {
-    width: 10rem !important;
-    height: 6.75rem !important;
+    width: 7.5rem !important;
+    height: 5rem !important;
   }
 }

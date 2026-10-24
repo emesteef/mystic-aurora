@@ -46,7 +46,7 @@ const FreeMaterialCtaSection = () => {
             >
               <Link to="/7-dni-powrotu-do-siebie" onClick={() => trackFreeMaterialCta("home_cta_section")}>
                 <Gift className="w-5 h-5 mr-2" aria-hidden="true" />
-                Odbierz darmowy materiał
+                Odbierz pierwszy dzień
               </Link>
             </Button>
           </div>

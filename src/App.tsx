@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Numerology from "./pages/Numerology";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FreeMaterial from "./pages/FreeMaterial";
+import ThankYou from "./pages/ThankYou";
+import ProgramPage from "./pages/ProgramPage";
 import CookieBanner from "./components/CookieBanner";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/numerologia" element={<Numerology />} />
           <Route path="/polityka-prywatnosci" element={<PrivacyPolicy />} />
           <Route path="/7-dni-powrotu-do-siebie" element={<FreeMaterial />} />
+          <Route path="/dziekujemy" element={<ThankYou />} />
+          <Route path="/program-7-dni" element={<ProgramPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
