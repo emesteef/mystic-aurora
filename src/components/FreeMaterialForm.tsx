@@ -1,13 +1,15 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CheckCircle2, CircleAlert, Loader2, Mail } from "lucide-react";
+import { CircleAlert, Loader2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { ThankYouState } from "@/config/free-material";
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "submitting" | "error";
+// invalid_email – backend (lub MailerLite) odrzucił adres; server_error – każdy inny błąd (sieć, konfiguracja, MailerLite)
+type SubmitError = "invalid_email" | "server_error";
 
 interface FormData {
   email: string;
@@ -16,14 +18,33 @@ interface FormData {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-// TODO: podłączyć wysyłkę (np. /.netlify/functions/subscribe). Na razie tylko symulacja.
-// Po podłączeniu: przy sukcesie i zaznaczonym newsletterze wywołać trackNewsletterSignup("landing_free_material").
-// Zwraca accepted: true dopiero, gdy backend potwierdzi przyjęcie zgłoszenia – wtedy formularz przechodzi na /dziekujemy.
-// Błąd wysyłki = wyjątek (formularz pokazuje komunikat i zostawia wpisane dane).
-const submitFreeMaterial = async (data: FormData): Promise<{ accepted: boolean }> => {
-  void data;
-  await new Promise((resolve) => setTimeout(resolve, 800));
-  return { accepted: false };
+class SubmitFailure extends Error {
+  constructor(readonly code: SubmitError) {
+    super(code);
+  }
+}
+
+// Zapis w MailerLite przez funkcję Netlify (netlify/functions/subscribe.js): zawsze grupa „7 dni”,
+// newsletter tylko przy zaznaczonej zgodzie. Sukces wyłącznie przy odpowiedzi 200 z { ok: true }.
+const submitFreeMaterial = async (data: FormData): Promise<void> => {
+  let res: Response;
+  try {
+    res = await fetch("/.netlify/functions/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        source: "free_7_days",
+        email: data.email,
+        newsletter: data.newsletter,
+        ...(data.newsletter && { consented_at: new Date().toISOString() }),
+      }),
+    });
+  } catch {
+    throw new SubmitFailure("server_error");
+  }
+  const body = (await res.json().catch(() => null)) as { ok?: boolean; error?: string } | null;
+  if (res.ok && body?.ok === true) return;
+  throw new SubmitFailure(body?.error === "invalid_email" ? "invalid_email" : "server_error");
 };
 
 const validateEmail = (value: string): string | null => {
@@ -50,13 +71,13 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [newsletter, setNewsletter] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
+  const [submitError, setSubmitError] = useState<SubmitError>("server_error");
   const [emailTouched, setEmailTouched] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [announcement, setAnnouncement] = useState("");
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const privacyRef = useRef<HTMLButtonElement>(null);
-  const successRef = useRef<HTMLHeadingElement>(null);
   const navigate = useNavigate();
   // blokada wielokrotnego wysłania (np. szybki podwójny Enter, zanim przycisk zdąży się wyłączyć)
   const submittingRef = useRef(false);
@@ -68,10 +89,6 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
   // błąd e-maila pokazujemy po opuszczeniu pola lub próbie wysłania; błąd zgody – dopiero po próbie wysłania
   const showEmailError = (emailTouched || submitAttempted) && !!emailError;
   const showPrivacyError = submitAttempted && !!privacyError;
-
-  useEffect(() => {
-    if (status === "success") successRef.current?.focus();
-  }, [status]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,35 +107,18 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
     setAnnouncement("Wysyłanie formularza…");
     setStatus("submitting");
     try {
-      // sukces pokazujemy dopiero po odpowiedzi wysyłki; wpisany adres zostaje w polu przy błędzie
-      const result = await submitFreeMaterial({ email: email.trim(), newsletter });
-      if (result.accepted) {
-        // zgłoszenie przyjęte przez backend → strona podziękowania (bez stanu nie da się na nią wejść)
-        navigate("/dziekujemy", { state: { submitted: true } satisfies ThankYouState });
-        return;
-      }
-      // symulacja (brak podłączonej wysyłki): dotychczasowy komunikat w miejscu formularza
+      // przejście dalej dopiero po potwierdzeniu backendu; przy błędzie wpisane dane zostają w formularzu
+      await submitFreeMaterial({ email: email.trim(), newsletter });
+      // zgłoszenie przyjęte → strona podziękowania (bez stanu nie da się na nią wejść)
+      navigate("/dziekujemy", { state: { submitted: true } satisfies ThankYouState });
+    } catch (error) {
       setAnnouncement("");
-      setStatus("success");
-    } catch {
-      setAnnouncement("");
+      setSubmitError(error instanceof SubmitFailure ? error.code : "server_error");
       setStatus("error");
     } finally {
       submittingRef.current = false;
     }
   };
-
-  if (status === "success") {
-    return (
-      <div className="text-center py-4 sm:py-6">
-        <CheckCircle2 className="w-12 h-12 text-accent mx-auto mb-4" aria-hidden="true" />
-        <h3 ref={successRef} tabIndex={-1} className="text-2xl font-heading text-foreground mb-3 outline-none">
-          Dziękujemy!
-        </h3>
-        <p className="text-lg text-foreground/85 leading-relaxed">Formularz został wysłany.</p>
-      </div>
-    );
-  }
 
   const isSubmitting = status === "submitting";
 
@@ -240,7 +240,9 @@ const FreeMaterialForm = forwardRef<HTMLInputElement>((_, ref) => {
 
         {status === "error" && (
           <FieldError id="free-material-submit-error" role="alert">
-            Nie udało się wysłać formularza. Spróbuj ponownie za chwilę.
+            {submitError === "invalid_email"
+              ? "Nie możemy wysłać materiału na ten adres. Sprawdź, czy jest wpisany poprawnie."
+              : "Nie udało się wysłać formularza. Spróbuj ponownie za chwilę."}
           </FieldError>
         )}
       </div>
